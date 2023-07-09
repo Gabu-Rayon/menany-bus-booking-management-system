@@ -212,7 +212,8 @@ if (empty($_SESSION['id'])) {
                                     <li class="main_nav_item"><a href="about.php">about us</a></li>
                                     <li class="main_nav_item"><a href="offers.php">offers</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
-                                    <li class="main_nav_item"><a href="#">contact</a></li>
+                                    <li class="main_nav_item"><a href="logout.php">logout</a></li>
+
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -266,7 +267,8 @@ if (empty($_SESSION['id'])) {
                     <li class="menu_item"><a href="about.php">about us</a></li>
                     <li class="menu_item"><a href="offers.php">offers</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
-                    <li class="menu_item"><a href="#">contact</a></li>
+                    <li class="menu_item"><a href="contact.php">contact</a></li>
+                    <li class="menu_item"><a href="logout.php">logout</a></li>
                 </ul>
             </div>
         </div>

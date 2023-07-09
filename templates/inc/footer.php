@@ -140,7 +140,7 @@
                         <script>
                         document.write(new Date().getFullYear());
                         </script> All rights reserved
-                        Menany Buses Inc
+                        Menany Buses
                     </div>
                 </div>
             </div>
