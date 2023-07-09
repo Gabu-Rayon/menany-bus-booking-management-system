@@ -10,7 +10,12 @@ if (empty($_SESSION['id'])) {
     $sql->execute();
     $fetch = $sql->fetch();
 
-
+// Retrieve data from the unpaid_tickets table
+$query = "SELECT * FROM unpaid_tickets";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$unpaidTickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 
 
 ?>
 
@@ -27,6 +32,69 @@ if (empty($_SESSION['id'])) {
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
+    <style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-input {
+        display: block;
+        width: 100%;
+        padding: 5px;
+        border: none;
+        background-color: #f5f5f5;
+        font-size: 16px;
+    }
+
+    .form-input:focus {
+        outline: none;
+        background-color: #e0e0e0;
+    }
+
+    .form-button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .form-button:hover {
+        background-color: #555;
+    }
+
+    .img-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .inline-form .form-group {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .inline-form .form-label {
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .inline-form .form-input {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+    }
+    </style>
 </head>
 
 <body>
@@ -78,7 +146,7 @@ if (empty($_SESSION['id'])) {
                         <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
                             <div class="logo_container">
                                 <div class="logo"><a href="index.php"><img src="images/logo.png" alt="">Menany Buses
-                                    </a>
+                                        Inc</a>
                                 </div>
                             </div>
                             <div class="main_nav_container ml-auto">
@@ -87,8 +155,8 @@ if (empty($_SESSION['id'])) {
                                     <li class="main_nav_item"><a href="about.php">about us</a></li>
                                     <li class="main_nav_item"><a href="offers.php">offers</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
-                                    <li class="main_nav_item"><a href="contact.php">contact</a></li>
                                     <li class="main_nav_item"><a href="logout.php">logout</a></li>
+
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -143,7 +211,7 @@ if (empty($_SESSION['id'])) {
                     <li class="menu_item"><a href="offers.php">offers</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
-                    <li class="main_nav_item"><a href="logout.php">logout</a></li>
+                    <li class="menu_item"><a href="logout.php">logout</a></li>
                 </ul>
             </div>
         </div>
@@ -160,8 +228,136 @@ if (empty($_SESSION['id'])) {
 
         <!-- Contact -->
 
+        <div class="contact_form_section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <!-- Image column -->
+                        <img src="images/07.jpg" alt="Image" class="img-fluid img-cover">
+                    </div>
+                    <div class="col-6">
+                        <!-- Contact Form -->
+                        <form action="#" method="POST" class="inline-form">
+                            <div class="form-group">
+                                <input class="form-input" type="hidden" id="customer_name" name="firstname" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="name">Bus:</label>
+                                <input class="form-input" type="text" id="bus_name" name="bus_name" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="name">Bus Plate:</label>
+                                <input class="form-input" type="text" id="bus_number" name="bus_number" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="email">From:</label>
+                                <input class="form-input" type="text" id="from_destination" name="from_location"
+                                    value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="password">To:</label>
+                                <input class="form-input" type="text" id="to_location" name="to_destination" value=" ">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="departure">Departure:</label>
+                                <input class="form-input" type="text" id="departure" name="departure" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="eta">Eta:</label>
+                                <input class="form-input" type="text" id="eta" name="eta" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="fare">Fare:</label>
+                                <input class="form-input" type="text" id="price" name="price" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="how_many>coming along with
+                                         someone:</label><br>
+                                     <i class=" fs-6">how many are you ?</i>
+                                    <input class=" form-input" type="number" id="how_many" name="how_many"
+                                        placeholder="optional">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="confirm_password">Luggage Quantity:</label>
+                                <input class=" form-input" type="number" id="luggage_count" name="luggage_count"
+                                    placeholder="optional">
+                            </div>
+                            <div class="form-group">
+                                <button type=" submit" name="book_now" id="form_submit_button"
+                                    class="form_submit_button button trans_200">book
+                                    now<span></span><span></span><span></span></button>
+
+                                <button type="button" id="form_cancel_button"
+                                    class="form_submit_button button trans_200 m-3">
+                                    <a href="offers.php">Cancel<span></span><span></span><span></span></a>
+                                </button>
+                            </div>
+                        </form>
+
+                        <form id="payment_form" action="process_payment.php" method="post">
+                            <!-- Display unpaid tickets data in the form -->
+                            <?php foreach ($unpaidTickets as $ticket): ?>
+                            <div>
+                                <label for="ticket_<?php echo $ticket['id']; ?>">Ticket ID:
+                                    <?php echo $ticket['id']; ?></label>
+                                <input type="checkbox" name="tickets[]" id="ticket_<?php echo $ticket['id']; ?>"
+                                    value="<?php echo $ticket['id']; ?>">
+                            </div>
+                            <?php endforeach; ?>
+
+                            <!-- Payment method switcher -->
+                            <div>
+                                <label for="payment_method">Payment Method:</label>
+                                <select name="payment_method" id="payment_method">
+                                    <option value="mpesa">M-Pesa</option>
+                                    <option value="bank">Bank Payment</option>
+                                    <option value="mastercard">Online Mastercard</option>
+                                </select>
+                            </div>
+
+                            <!-- Additional fields based on the selected payment method -->
+                            <div id="mpesa_fields" style="display: none;">
+                                <!-- M-Pesa fields go here -->
+                            </div>
+
+                            <div id="bank_fields" style="display: none;">
+                                <!-- Bank payment fields go here -->
+                            </div>
+
+                            <div id="mastercard_fields" style="display: none;">
+                                <!-- Online Mastercard fields go here -->
+                            </div>
+
+                            <button type="submit">Make Payment</button>
+                        </form>
+
+                        <!-- Script to show/hide payment fields based on the selected payment method -->
+                        <script>
+                        $(document).ready(function() {
+                            $('#payment_method').change(function() {
+                                var selectedMethod = $(this).val();
+
+                                // Hide all payment fields
+                                $('#mpesa_fields, #bank_fields, #mastercard_fields').hide();
+
+                                // Show the selected payment field
+                                $('#' + selectedMethod + '_fields').show();
+                            });
+                        });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
 
         <!-- Footer -->
         <?php
       include "templates/inc/footer.php";
-}
+         }
