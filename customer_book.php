@@ -202,7 +202,7 @@ if (empty($_SESSION['id'])) {
                     <div class="row">
                         <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
                             <div class="logo_container">
-                                <div class="logo"><a href="#"><img src="images/logo.png" alt="">Menany Buses
+                                <div class="logo"><a href="index.php"><img src="images/logo.png" alt="">Menany Buses
                                         Inc</a>
                                 </div>
                             </div>
