@@ -9,14 +9,11 @@ if (empty($_SESSION['id'])) {
     $sql = $conn->prepare("SELECT * FROM `tbl_users` WHERE `id`='$id'");
     $sql->execute();
     $fetch = $sql->fetch();
-
-// Retrieve data from the unpaid_tickets table
-$query = "SELECT * FROM unpaid_tickets";
-$stmt = $conn->prepare($query);
-$stmt->execute();
-$unpaidTickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
- 
-
+    // Retrieve data from the unpaid_tickets table
+    $query = "SELECT * FROM unpaid_tickets";
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $unpaidTickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
