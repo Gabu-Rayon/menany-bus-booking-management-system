@@ -243,10 +243,7 @@ if (empty($_SESSION['id'])) {
                                 <label class="form-label" for="name">Bus:</label>
                                 <input class="form-input" type="text" id="bus_name" name="bus_name" value="">
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="name">Bus Plate:</label>
-                                <input class="form-input" type="text" id="bus_number" name="bus_number" value="">
-                            </div>
+
 
                             <div class="form-group">
                                 <label class="form-label" for="email">From:</label>
