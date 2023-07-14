@@ -30,7 +30,7 @@ include "templates/inc/header.php";
                             <div class="col-md-6 mb-4">
 
                                 <div class="form-outline">
-                                    <label for="email">Email address</label>
+                                    <label for="email" class="text-light">Email address</label>
                                     <input id="email" class="form-control" name="email" type="email"
                                         placeholder="Enter email">
                                 </div>
@@ -39,7 +39,7 @@ include "templates/inc/header.php";
                             <div class="col-md-6 mb-4">
 
                                 <div class="form-outline">
-                                    <label for="password">Password</label>
+                                    <label for="password" class="text-light">Password</label>
                                     <input id="password" class="form-control" name="password" type="password"
                                         placeholder="Password">
                                 </div>
@@ -51,6 +51,9 @@ include "templates/inc/header.php";
 
                         <div class="mt-4 pt-2">
                             <button id="login" class="btn btn-primary" type="submit">Sign In</button>
+                        </div>
+                        <div class="text-light  mt-3 pt-2">
+                            Don't have an account ? <a href="sign-up.php">Sign Up</a>
                         </div>
                     </form>
                 </div>
@@ -84,7 +87,8 @@ $(function() {
             res = JSON.parse(res);
             if (res['status']) // if login successful redirect user to booking.php page.
             {
-                location.href = "offers.php"; // redirect user to sbooking.php location/page.
+                location.href =
+                    "offers.php"; // redirect user to sbooking.php location/page.
             } else {
 
                 var errorMessage = '';

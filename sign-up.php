@@ -105,6 +105,9 @@ include "templates/inc/header.php";
                             <button type="submit" name="submit" id="submit" class="btn btn-primary">Sign
                                 Up</button>
                         </div>
+                        <div class="text-light  mt-3 pt-2">
+                            Already have an account ? <a href="sign-in.php">Sign In</a>
+                        </div>
                     </form>
                 </div>
 

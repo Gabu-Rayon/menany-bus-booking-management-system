@@ -29,6 +29,7 @@ if (empty($_SESSION['id'])) {
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
+
     <style>
     .form-group {
         margin-bottom: 20px;
@@ -273,15 +274,39 @@ if (empty($_SESSION['id'])) {
                             <div class="form-group">
                                 <label class="form-label" for="how_many>coming along with
                                          someone:</label><br>
-                                     <i class=" fs-6">how many are you ?</i>
+                                     <i class=" fs-6">number of seats</i>
                                     <input class=" form-input" type="number" id="how_many" name="how_many"
                                         placeholder="optional">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="confirm_password">Luggage Quantity:</label>
+                                <label class="form-label" for="confirm_password">Luggage Quantity</label>
                                 <input class=" form-input" type="number" id="luggage_count" name="luggage_count"
                                     placeholder="optional">
                             </div>
+                            <!-- Payment method switcher -->
+                            <div class="form-group">
+                                <label for="payment_method" class="form-label">Payment Method:</label>
+                                <select name="payment_method" class="form-group" id="payment_method">
+                                    <option value="mpesa">M-Pesa</option>
+                                    <option value="bank">Bank Payment</option>
+                                    <option value="mastercard">Online Mastercard</option>
+                                </select>
+                            </div>
+
+                            <!-- Additional fields based on the selected payment method -->
+                            <div id="mpesa_fields" class="form-group" style="display: none;">
+                                <!-- M-Pesa fields go here -->
+                                <input type="text" class=" form-input" name="" placeholder="">
+                            </div>
+
+                            <div id=" bank_fields" class="form-group" style="display: none;">
+                                <!-- Bank payment fields go here -->
+                            </div>
+
+                            <div id="mastercard_fields" class="form-group" style="display: none;">
+                                <!-- Online Mastercard fields go here -->
+                            </div>
+
                             <div class="form-group">
                                 <button type=" submit" name="book_now" id="form_submit_button"
                                     class="form_submit_button button trans_200">book
@@ -294,43 +319,10 @@ if (empty($_SESSION['id'])) {
                             </div>
                         </form>
 
-                        <form id="payment_form" action="process_payment.php" method="post">
-                            <!-- Display unpaid tickets data in the form -->
-                            <?php foreach ($unpaidTickets as $ticket): ?>
-                            <div>
-                                <label for="ticket_<?php echo $ticket['id']; ?>">Ticket ID:
-                                    <?php echo $ticket['id']; ?></label>
-                                <input type="checkbox" name="tickets[]" id="ticket_<?php echo $ticket['id']; ?>"
-                                    value="<?php echo $ticket['id']; ?>">
-                            </div>
-                            <?php endforeach; ?>
 
-                            <!-- Payment method switcher -->
-                            <div>
-                                <label for="payment_method">Payment Method:</label>
-                                <select name="payment_method" id="payment_method">
-                                    <option value="mpesa">M-Pesa</option>
-                                    <option value="bank">Bank Payment</option>
-                                    <option value="mastercard">Online Mastercard</option>
-                                </select>
-                            </div>
-
-                            <!-- Additional fields based on the selected payment method -->
-                            <div id="mpesa_fields" style="display: none;">
-                                <!-- M-Pesa fields go here -->
-                            </div>
-
-                            <div id="bank_fields" style="display: none;">
-                                <!-- Bank payment fields go here -->
-                            </div>
-
-                            <div id="mastercard_fields" style="display: none;">
-                                <!-- Online Mastercard fields go here -->
-                            </div>
-
-                            <button type="submit">Make Payment</button>
-                        </form>
-
+                        <script src="https://code.jquery.com/jquery-3.7.0.js"
+                            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+                        </script>
                         <!-- Script to show/hide payment fields based on the selected payment method -->
                         <script>
                         $(document).ready(function() {
