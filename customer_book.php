@@ -40,45 +40,69 @@ if (empty($_SESSION['id'])) {
         die('Schedule not found.');
     }
 
-    if (isset($_POST['book_now'])) {
-        $customerId = $id;
-        $busName = $_POST['bus_name'];
-        $busPlate = $_POST['bus_number'];
-        $fromTerminal = $_POST['from_location'];
-        $toDestination = $_POST['to_destination'];
-        $departure = $_POST['departure'];
-        $eta = $_POST['eta'];
-        $fare = $_POST['price'];
-        $howMany = $_POST['how_many'];
-        $luggageCount = $_POST['luggage_count'];
-        $totalFare = $fare;
-        if (!empty($howMany)) {
-       
-            $totalFare *= $howMany;
-        }
+if (isset($_POST['book_now'])) {
+    $customerId = $id;
+    $busName = $_POST['bus_name'];
+    $busPlate = $_POST['bus_number'];
+    $fromTerminal = $_POST['from_location'];
+    $toDestination = $_POST['to_destination'];
+    $departure = $_POST['departure'];
+    $eta = $_POST['eta'];
+    $fare = $_POST['price'];
+    $howMany = $_POST['how_many'];
+    $luggageCount = $_POST['luggage_count'];
+    $totalFare = $fare;
 
-         // Insert data into unpaid_tickets table
-    $insertQuery = "INSERT INTO unpaid_tickets (customer_id, bus, bus_plate, from_terminal, to_destination, departure, eta, fare_amount, how_many, luggage_count) 
-    VALUES (:customerId, :busName, :busPlate, :fromTerminal, :toDestination, :departure, :eta, :fare, :howMany, :luggageCount)";
-    $stmt = $conn->prepare($insertQuery);
-    $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
-    $stmt->bindParam(':busName', $busName, PDO::PARAM_STR);
-    $stmt->bindParam(':busPlate', $busPlate, PDO::PARAM_STR);
-    $stmt->bindParam(':fromTerminal', $fromTerminal, PDO::PARAM_STR);
-    $stmt->bindParam(':toDestination', $toDestination, PDO::PARAM_STR);
-    $stmt->bindParam(':departure', $departure, PDO::PARAM_STR);
-    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
-    $stmt->bindParam(':fare', $totalFare, PDO::PARAM_STR); // Use $totalFare instead of $fare
-    $stmt->bindParam(':howMany', $howMany, PDO::PARAM_INT);
-    $stmt->bindParam(':luggageCount', $luggageCount, PDO::PARAM_INT);
+    // Calculate total fare based on 'how_many' input (if available)
+    if (!empty($howMany)) {
+        $totalFare *= $howMany;
+    }
+
+    try {
+        $conn->beginTransaction();
+
+        // Insert data into unpaid_tickets table
+        $unpaidInsertQuery = "INSERT INTO unpaid_tickets (customer_id, bus, bus_plate, from_terminal, to_destination, departure, eta, fare_amount, how_many, luggage_count) 
+        VALUES (:customerId, :busName, :busPlate, :fromTerminal, :toDestination, :departure, :eta, :fare, :howMany, :luggageCount)";
+        $unpaidStmt = $conn->prepare($unpaidInsertQuery);
+        $unpaidStmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        $unpaidStmt->bindParam(':busName', $busName, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':busPlate', $busPlate, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':fromTerminal', $fromTerminal, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':toDestination', $toDestination, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':departure', $departure, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':eta', $eta, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':fare', $totalFare, PDO::PARAM_STR);
+        $unpaidStmt->bindParam(':howMany', $howMany, PDO::PARAM_INT);
+        $unpaidStmt->bindParam(':luggageCount', $luggageCount, PDO::PARAM_INT);
+
+        $unpaidStmt->execute();
+
+        // Insert data into paid_tickets table
+        $paidInsertQuery = "INSERT INTO paid_tickets (bus, customer_id, from_terminal, to_destination, departure, eta, how_many, luggage_count, ref_no, amount_paid, type_payment, payment_ref_no) 
+        VALUES (:busName, :customerId, :fromTerminal, :toDestination, :departure, :eta, :howMany, :luggageCount, NULL, NULL, NULL, NULL)";
+        $paidStmt = $conn->prepare($paidInsertQuery);
+        $paidStmt->bindParam(':busName', $busName, PDO::PARAM_STR);
+        $paidStmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        $paidStmt->bindParam(':fromTerminal', $fromTerminal, PDO::PARAM_STR);
+        $paidStmt->bindParam(':toDestination', $toDestination, PDO::PARAM_STR);
+        $paidStmt->bindParam(':departure', $departure, PDO::PARAM_STR);
+        $paidStmt->bindParam(':eta', $eta, PDO::PARAM_STR);
+        $paidStmt->bindParam(':howMany', $howMany, PDO::PARAM_INT);
+        $paidStmt->bindParam(':luggageCount', $luggageCount, PDO::PARAM_INT);
+
+        $paidStmt->execute();
+
+        $conn->commit();
+        header('location: book_now.php');
+    } catch (Exception $e) {
+        $conn->rollBack();
+        echo "Failed to book ticket. Error: " . $e->getMessage();
+    }
+}
+?>
 
 
-        if ($stmt->execute()) {
-            header('location: book_now.php');
-        } else {
-            echo "Failed to book ticket.";
-        }
-    } 
 ?>
 
 <!DOCTYPE html>

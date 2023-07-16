@@ -28,6 +28,8 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
 <style>
 table {
@@ -177,17 +179,12 @@ th {
         <div class="contact_form_section">
             <div class="container">
                 <div class="row">
-                    <div class="col-6">
-                        <!-- Image column -->
-                        <img src="images/07.jpg" alt="Image" class="img-fluid img-cover">
-                    </div>
-                    <div class="col-6">
+                    <div class="col-8">
                         <!-- Contact Form -->
-                        <form method="post" action="process_tickets.php">
+                        <form method="post" action="#">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Customer ID</th>
                                         <th>Bus Name</th>
                                         <th>Bus Plate</th>
                                         <th>From Terminal</th>
@@ -197,13 +194,17 @@ th {
                                         <th>Fare Amount</th>
                                         <th>How Many</th>
                                         <th>Luggage Count</th>
-                                        <th>Action</th>
+                                        <th>Pay</th>
+                                        <th>Delete</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($unpaidTicketsData as $ticket) { ?>
+                                    <?php foreach ($unpaidTicketsData as $ticket) { 
+                                    $amount_topay = $ticket['fare_amount'];
+
+                                    ?>
                                     <tr>
-                                        <td><?php echo $ticket['customer_id']; ?></td>
                                         <td><?php echo $ticket['bus']; ?></td>
                                         <td><?php echo $ticket['bus_plate']; ?></td>
                                         <td><?php echo $ticket['from_terminal']; ?></td>
@@ -214,34 +215,88 @@ th {
                                         <td><?php echo $ticket['how_many']; ?></td>
                                         <td><?php echo $ticket['luggage_count']; ?></td>
                                         <td>
-                                            <!-- Add checkboxes to select individual records -->
-                                            <input type="checkbox" name="selected_tickets[]"
-                                                value="<?php echo $ticket['id']; ?>">
+                                            <!-- Buttons for "Pay Ticket" and "Delete Ticket" -->
+                                            <button <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal" value="<?php echo $ticket['id']; ?>">
+                                                Pay Ticket</button>
+
+                                        </td>
+                                        <td>
+                                            <button type="submit" name="delete_ticket" class="btn btn-danger"
+                                                value="<?php echo $ticket['id']; ?>">Delete Ticket</button>
                                         </td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <input type="submit" name="pay_selected" value="Pay Selected Tickets">
-                            <input type="submit" name="delete_selected" value="Delete Selected Tickets">
                         </form>
-                        <script src="https://code.jquery.com/jquery-3.7.0.js"
-                            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
-                        </script>
-                        <!-- Script to show/hide payment fields based on the selected payment method -->
-                        <script>
-                        $(document).ready(function() {
-                            $('#payment_method').change(function() {
-                                var selectedMethod = $(this).val();
 
-                                // Hide all payment fields
-                                $('#mpesa_fields, #bank_fields, #mastercard_fields').hide();
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!-- Modal content ... -->
+                                    <div class="modal-body">
+                                        <!-- Payment form content -->
+                                        <form method="post" action="process_payment.php">
+                                            <!-- Payment form fields here... -->
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="form-outline">
+                                                        <label for="email" class="text-light">Amount to Pay </label>
+                                                        <input id="amount_paid" class="form-control" name="amount_paid"
+                                                            type="number" value="<?php echo $amount_topay; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="form-outline">
+                                                        <label for="password" class="text-light">Select Payment
+                                                            Method</label>
+                                                        <select class="form-select" name="type_payment"
+                                                            id="paymentMethodSelect">
+                                                            <option value="mpesa">Mpesa</option>
+                                                            <option value="masterCard">Master Card</option>
+                                                            <option value="visaCard">Visa Card</option>
+                                                            <option value="bankAccount">Bank Account</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- Input fields for specific payment methods -->
+                                                    <div class="payment-fields" id="mpesaFields">
+                                                        <p>
+                                                            <!-- Add fields for Mpesa -->
+                                                            Mpesa-specific input fields...
+                                                        </p>
+                                                    </div>
+                                                    <div class="payment-fields" id="masterCardFields">
+                                                        <p>
+                                                            <!-- Add fields for Master Card -->
+                                                            Master Card-specific input fields...
+                                                        </p>
+                                                    </div>
+                                                    <div class="payment-fields" id="visaCardFields">
+                                                        <p>
+                                                            <!-- Add fields for Visa Card -->
+                                                            Visa Card-specific input fields...
+                                                        </p>
+                                                    </div>
+                                                    <div class="payment-fields" id="bankAccountFields">
+                                                        <p>
+                                                            <!-- Add fields for Bank Account -->
+                                                            Bank Account-specific input fields...
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                // Show the selected payment field
-                                $('#' + selectedMethod + '_fields').show();
-                            });
-                        });
-                        </script>
                     </div>
                 </div>
             </div>
@@ -423,7 +478,28 @@ th {
         </div>
 
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous">
+    </script>
+    <script>
+    $(document).ready(function() {
+        // Event handler for the payment method select
+        $("#paymentMethodSelect").change(function() {
+            // Get the selected payment method
+            var selectedPaymentMethod = $(this).val();
+            // Hide all payment fields
+            $(".payment-fields").hide();
+            // Show the payment fields for the selected payment method
+            $("#" + selectedPaymentMethod + "Fields").show();
+        });
+    });
+    </script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="styles/bootstrap4/popper.js"></script>
     <script src="styles/bootstrap4/bootstrap.min.js"></script>
