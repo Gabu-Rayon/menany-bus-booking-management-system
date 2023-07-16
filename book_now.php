@@ -1,26 +1,8 @@
-<?php
-session_start();
-require_once 'config/connect.php';
-
-if (empty($_SESSION['id'])) {
-    header('location: sign-in.php');
-} else {
-    $id = $_SESSION['id'];
-    $sql = $conn->prepare("SELECT * FROM `tbl_users` WHERE `id`='$id'");
-    $sql->execute();
-    $fetch = $sql->fetch();
-    // Retrieve data from the unpaid_tickets table
-    $query = "SELECT * FROM unpaid_tickets";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $unpaidTickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Customer Book</title>
+    <title>Book Schedule</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Travelix Project">
@@ -29,70 +11,6 @@ if (empty($_SESSION['id'])) {
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
     <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
-
-    <style>
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .form-input {
-        display: block;
-        width: 100%;
-        padding: 5px;
-        border: none;
-        background-color: #f5f5f5;
-        font-size: 16px;
-    }
-
-    .form-input:focus {
-        outline: none;
-        background-color: #e0e0e0;
-    }
-
-    .form-button {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #333;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .form-button:hover {
-        background-color: #555;
-    }
-
-    .img-cover {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .inline-form .form-group {
-        display: inline-block;
-        margin-right: 10px;
-    }
-
-    .inline-form .form-label {
-        display: inline-block;
-        margin-right: 5px;
-        vertical-align: middle;
-    }
-
-    .inline-form .form-input {
-        display: inline-block;
-        width: auto;
-        vertical-align: middle;
-    }
-    </style>
 </head>
 
 <body>
@@ -127,9 +45,8 @@ if (empty($_SESSION['id'])) {
                                 </ul>
                             </div>
                             <div class="user_box ml-auto">
-                                <div class="user_box_login user_box_link"><a href="sign-in.php">sign in</a></div>
-                                <div class="user_box_register user_box_link"><a href="sign-up.php.">sign up</a>
-                                </div>
+                                <div class="user_box_login user_box_link"><a href="sign-in.php">Sign in</a></div>
+                                <div class="user_box_register user_box_link"><a href="sign-up.php">Sign Up</a></div>
                             </div>
                         </div>
                     </div>
@@ -143,8 +60,8 @@ if (empty($_SESSION['id'])) {
                     <div class="row">
                         <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
                             <div class="logo_container">
-                                <div class="logo"><a href="index.php"><img src="images/logo.png" alt="">Menany Buses
-                                        Inc</a>
+                                <div class="logo"><a href="index.php"><img src="/images/logo.png" alt="">Menany
+                                        Buses</a>
                                 </div>
                             </div>
                             <div class="main_nav_container ml-auto">
@@ -153,8 +70,7 @@ if (empty($_SESSION['id'])) {
                                     <li class="main_nav_item"><a href="about.php">about us</a></li>
                                     <li class="main_nav_item"><a href="offers.php">offers</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
-                                    <li class="main_nav_item"><a href="logout.php">logout</a></li>
-
+                                    <li class="main_nav_item"><a href="contact.php">contact</a></li>
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -202,30 +118,26 @@ if (empty($_SESSION['id'])) {
                 <div class="menu_close_container">
                     <div class="menu_close"></div>
                 </div>
-                <div class="logo menu_logo"><a href="#"><img src="images/logo.png" alt=""></a></div>
+                <div class="logo menu_logo"><a href="#"><img src="/images/logo.png" alt=""></a></div>
                 <ul>
-                    <li class="menu_item"><a href="index.php">home</a></li>
+                    <li class="menu_item"><a href="#">home</a></li>
                     <li class="menu_item"><a href="about.php">about us</a></li>
                     <li class="menu_item"><a href="offers.php">offers</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
-                    <li class="menu_item"><a href="logout.php">logout</a></li>
                 </ul>
             </div>
         </div>
-
         <!-- Home -->
 
         <div class="home">
-            <div class="home_background parallax-window" data-parallax="scroll"
-                data-image-src="images/contact_background.jpg"></div>
+            <div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/09.jpg"></div>
             <div class="home_content">
                 <div class="home_title">Book Schedule</div>
             </div>
         </div>
 
-        <!-- Contact -->
-
+        <!-- Book Now -->
         <div class="contact_form_section">
             <div class="container">
                 <div class="row">
@@ -286,7 +198,7 @@ if (empty($_SESSION['id'])) {
                             <!-- Payment method switcher -->
                             <div class="form-group">
                                 <label for="payment_method" class="form-label">Payment Method:</label>
-                                <select name="payment_method" class="form-group" id="payment_method">
+                                <select name="payment_method" class="form-select" id="payment_method">
                                     <option value="mpesa">M-Pesa</option>
                                     <option value="bank">Bank Payment</option>
                                     <option value="mastercard">Online Mastercard</option>
@@ -342,8 +254,180 @@ if (empty($_SESSION['id'])) {
             </div>
         </div>
         <br>
-
         <!-- Footer -->
-        <?php
-      include "templates/inc/footer.php";
-         }
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Footer Column -->
+                    <div class="col-lg-3 footer_column">
+                        <div class="footer_col">
+                            <div class="footer_content footer_about">
+                                <div class="logo_container footer_logo">
+                                    <div class="logo"><a href="#"><img src="images/logo.png" alt="">Menany Buses Inc</a>
+                                    </div>
+                                </div>
+                                <p class="footer_about_text">Experience reliable and convenient bus services for your
+                                    travel
+                                    needs. Our professional team provides
+                                    efficient transportation solutions, ensuring a comfortable and safe journey.
+                                    Discover
+                                    affordable fares,
+                                    flexible schedules, and a wide network of destinations.</p>
+                                <ul class="footer_social_list">
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-behance"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column -->
+                    <div class="col-lg-3 footer_column">
+                        <div class="footer_col">
+                            <div class="footer_title">The near future</div>
+                            <div class="footer_content footer_blog">
+
+                                <!-- Footer blog item -->
+                                <div class="footer_blog_item clearfix">
+                                    <div class="footer_blog_image"><img src="images/Nanyuki-Town.jpeg"
+                                            alt="https://unsplash.com/@avidenov"></div>
+                                    <div class="footer_blog_content">
+                                        <div class="footer_blog_title"><a href="blog.php">Isiolo Route</a>
+                                        </div>
+                                        <div class="footer_blog_date">Date reveal soon </div>
+                                    </div>
+                                </div>
+
+                                <!-- Footer blog item -->
+                                <div class="footer_blog_item clearfix">
+                                    <div class="footer_blog_image"><img src="images/Meru-town.jpeg"
+                                            alt="https://unsplash.com/@deannaritchie"></div>
+                                    <div class="footer_blog_content">
+                                        <div class="footer_blog_title"><a href="blog.php">New destinations for you</a>
+                                        </div>
+                                        <div class="footer_blog_date">Date reveal soon</div>
+                                    </div>
+                                </div>
+
+                                <!-- Footer blog item -->
+                                <div class="footer_blog_item clearfix">
+                                    <div class="footer_blog_image"><img src="images/Meru-town.jpeg"
+                                            alt="https://unsplash.com/@bergeryap87"></div>
+                                    <div class="footer_blog_content">
+                                        <div class="footer_blog_title"><a href="blog.php">Marsabit Route</a>
+                                        </div>
+                                        <div class="footer_blog_date">Date reveal soon</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column -->
+                    <div class="col-lg-3 footer_column">
+                        <div class="footer_col">
+                            <div class="footer_title">tags</div>
+                            <div class="footer_content footer_tags">
+                                <ul class="tags_list clearfix">
+                                    <li class="tag_item"><a href="#">adventure tours</a></li>
+                                    <li class="tag_item"><a href="#">travel tours</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column -->
+                    <div class="col-lg-3 footer_column">
+                        <div class="footer_col">
+                            <div class="footer_title">contact info</div>
+                            <div class="footer_content footer_contact">
+                                <ul class="contact_info_list">
+                                    <li class="contact_info_item d-flex flex-row">
+                                        <div>
+                                            <div class="contact_info_icon"><img src="images/placeholder.svg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="contact_info_text">Meru Town Menany Buses Inc 1203V Njuri Ncheke
+                                            Street</div>
+                                    </li>
+                                    <li class="contact_info_item d-flex flex-row">
+                                        <div>
+                                            <div class="contact_info_icon"><img src="images/phone-call.svg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="contact_info_text">0020-808-8000</div>
+                                    </li>
+                                    <li class="contact_info_item d-flex flex-row">
+                                        <div>
+                                            <div class="contact_info_icon"><img src="images/message.svg" alt=""></div>
+                                        </div>
+                                        <div class="contact_info_text"><a
+                                                href="mailto:contactme@gmail.com?Subject=Hello"
+                                                target="_top">info@menanybusesinc.com</a></div>
+                                    </li>
+                                    <li class="contact_info_item d-flex flex-row">
+                                        <div>
+                                            <div class="contact_info_icon"><img src="images/planet-earth.svg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="contact_info_text"><a href="#">menany.com</a></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+        <!-- Copyright -->
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 order-lg-1 order-2  ">
+                        <div class="copyright_content d-flex flex-row align-items-center">
+                            <div>
+                                Copyright &copy;
+                                <script>
+                                document.write(new Date().getFullYear());
+                                </script> All rights reserved
+                                Menany Buses
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 order-lg-2 order-1">
+                        <div class="footer_nav_container d-flex flex-row align-items-center justify-content-lg-end">
+                            <div class="footer_nav">
+                                <ul class="footer_nav_list">
+                                    <li class="footer_nav_item"><a href="#">home</a></li>
+                                    <li class="footer_nav_item"><a href="about.php">about us</a></li>
+                                    <li class="footer_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="footer_nav_item"><a href="blog.php">news</a></li>
+                                    <li class="footer_nav_item"><a href="contact.php">contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="styles/bootstrap4/popper.js"></script>
+    <script src="styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="plugins/parallax-js-master/parallax.min.js"></script>
+    <script src="js/contact_custom.js"></script>
+
+</body>
+
+</html>
