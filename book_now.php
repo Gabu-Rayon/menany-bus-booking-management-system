@@ -9,26 +9,43 @@ if (empty($_SESSION['id'])) {
     $sql = $conn->prepare("SELECT * FROM `tbl_users` WHERE `id`='$id'");
     $sql->execute();
     $fetch = $sql->fetch();
+    $cust_id = $fetch['id'];
     
 // Fetch all data from the unpaid_tickets table
-$selectQuery = "SELECT * FROM unpaid_tickets";
+$selectQuery = "SELECT * FROM unpaid_tickets WHERE `customer_id` ='$cust_id'" ;
 $stmt = $conn->query($selectQuery);
 $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+<title>Book Schedule</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Travelix Project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
+<link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
 
-<head>
-    <title>Book Schedule</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Travelix Project">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-    <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
-    <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+</style>
 </head>
 
 <body>
@@ -149,7 +166,8 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Home -->
 
         <div class="home">
-            <div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/09.jpg"></div>
+            <div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/09.jpg">
+            </div>
             <div class="home_content">
                 <div class="home_title">Book Schedule</div>
             </div>
@@ -165,91 +183,48 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="col-6">
                         <!-- Contact Form -->
-                        <form action="#" method="POST" class="inline-form">
-                            <div class="form-group">
-                                <input class="form-input" type="hidden" id="customer_name" name="firstname" value="">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="name">Bus:</label>
-                                <input class="form-input" type="text" id="bus_name" name="bus_name" value="">
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="form-label" for="email">From:</label>
-                                <input class="form-input" type="text" id="from_destination" name="from_location"
-                                    value="">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="password">To:</label>
-                                <input class="form-input" type="text" id="to_location" name="to_destination" value=" ">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="departure">Departure:</label>
-                                <input class="form-input" type="text" id="departure" name="departure" value="">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="eta">Eta:</label>
-                                <input class="form-input" type="text" id="eta" name="eta" value="">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="fare">Fare:</label>
-                                <input class="form-input" type="text" id="price" name="price" value="">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="how_many>coming along with
-                                         someone:</label><br>
-                                     <i class=" fs-6">number of seats</i>
-                                    <input class=" form-input" type="number" id="how_many" name="how_many"
-                                        placeholder="optional">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="confirm_password">Luggage Quantity</label>
-                                <input class=" form-input" type="number" id="luggage_count" name="luggage_count"
-                                    placeholder="optional">
-                            </div>
-                            <!-- Payment method switcher -->
-                            <div class="form-group">
-                                <label for="payment_method" class="form-label">Payment Method:</label>
-                                <select name="payment_method" class="form-select" id="payment_method">
-                                    <option value="mpesa">M-Pesa</option>
-                                    <option value="bank">Bank Payment</option>
-                                    <option value="mastercard">Online Mastercard</option>
-                                </select>
-                            </div>
-
-                            <!-- Additional fields based on the selected payment method -->
-                            <div id="mpesa_fields" class="form-group" style="display: none;">
-                                <!-- M-Pesa fields go here -->
-                                <input type="text" class=" form-input" name="" placeholder="">
-                            </div>
-
-                            <div id=" bank_fields" class="form-group" style="display: none;">
-                                <!-- Bank payment fields go here -->
-                            </div>
-
-                            <div id="mastercard_fields" class="form-group" style="display: none;">
-                                <!-- Online Mastercard fields go here -->
-                            </div>
-
-                            <div class="form-group">
-                                <button type=" submit" name="book_now" id="form_submit_button"
-                                    class="form_submit_button button trans_200">book
-                                    now<span></span><span></span><span></span></button>
-
-                                <button type="button" id="form_cancel_button"
-                                    class="form_submit_button button trans_200 m-3">
-                                    <a href="offers.php">Cancel<span></span><span></span><span></span></a>
-                                </button>
-                            </div>
+                        <form method="post" action="process_tickets.php">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <th>Bus Name</th>
+                                        <th>Bus Plate</th>
+                                        <th>From Terminal</th>
+                                        <th>To Destination</th>
+                                        <th>Departure</th>
+                                        <th>ETA</th>
+                                        <th>Fare Amount</th>
+                                        <th>How Many</th>
+                                        <th>Luggage Count</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($unpaidTicketsData as $ticket) { ?>
+                                    <tr>
+                                        <td><?php echo $ticket['customer_id']; ?></td>
+                                        <td><?php echo $ticket['bus']; ?></td>
+                                        <td><?php echo $ticket['bus_plate']; ?></td>
+                                        <td><?php echo $ticket['from_terminal']; ?></td>
+                                        <td><?php echo $ticket['to_destination']; ?></td>
+                                        <td><?php echo $ticket['departure']; ?></td>
+                                        <td><?php echo $ticket['eta']; ?></td>
+                                        <td><?php echo $ticket['fare_amount']; ?></td>
+                                        <td><?php echo $ticket['how_many']; ?></td>
+                                        <td><?php echo $ticket['luggage_count']; ?></td>
+                                        <td>
+                                            <!-- Add checkboxes to select individual records -->
+                                            <input type="checkbox" name="selected_tickets[]"
+                                                value="<?php echo $ticket['id']; ?>">
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            <input type="submit" name="pay_selected" value="Pay Selected Tickets">
+                            <input type="submit" name="delete_selected" value="Delete Selected Tickets">
                         </form>
-
-
                         <script src="https://code.jquery.com/jquery-3.7.0.js"
                             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
                         </script>
@@ -283,10 +258,12 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="footer_col">
                             <div class="footer_content footer_about">
                                 <div class="logo_container footer_logo">
-                                    <div class="logo"><a href="#"><img src="images/logo.png" alt="">Menany Buses Inc</a>
+                                    <div class="logo"><a href="#"><img src="images/logo.png" alt="">Menany Buses
+                                            Inc</a>
                                     </div>
                                 </div>
-                                <p class="footer_about_text">Experience reliable and convenient bus services for your
+                                <p class="footer_about_text">Experience reliable and convenient bus services for
+                                    your
                                     travel
                                     needs. Our professional team provides
                                     efficient transportation solutions, ensuring a comfortable and safe journey.
@@ -294,11 +271,16 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     affordable fares,
                                     flexible schedules, and a wide network of destinations.</p>
                                 <ul class="footer_social_list">
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-behance"></i></a></li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-pinterest"></i></a>
+                                    </li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a>
+                                    </li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-dribbble"></i></a>
+                                    </li>
+                                    <li class="footer_social_item"><a href="#"><i class="fa fa-behance"></i></a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -326,7 +308,8 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="footer_blog_image"><img src="images/Meru-town.jpeg"
                                             alt="https://unsplash.com/@deannaritchie"></div>
                                     <div class="footer_blog_content">
-                                        <div class="footer_blog_title"><a href="blog.php">New destinations for you</a>
+                                        <div class="footer_blog_title"><a href="blog.php">New destinations for
+                                                you</a>
                                         </div>
                                         <div class="footer_blog_date">Date reveal soon</div>
                                     </div>
@@ -383,7 +366,8 @@ $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </li>
                                     <li class="contact_info_item d-flex flex-row">
                                         <div>
-                                            <div class="contact_info_icon"><img src="images/message.svg" alt=""></div>
+                                            <div class="contact_info_icon"><img src="images/message.svg" alt="">
+                                            </div>
                                         </div>
                                         <div class="contact_info_text"><a
                                                 href="mailto:contactme@gmail.com?Subject=Hello"

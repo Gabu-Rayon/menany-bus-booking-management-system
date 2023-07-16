@@ -74,21 +74,6 @@
                                     <li class="main_nav_item"><a href="offers.php">offers</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
                                     <li class="main_nav_item"><a href="contact.php">contact</a></li>
-                                    <?php
-session_start();
-require_once 'config/connect.php';
-
-if (empty($_SESSION['id'])) {
-    header('location: sign-in.php');
-							{
-    $id = $_SESSION['id'];
-    $sql = $conn->prepare("SELECT * FROM `tbl_users` WHERE `id`='$id'");
-    $sql->execute();
-    $fetch = $sql->fetch();
-    echo $fetch['firstname']." ". $fetch['lastname'];
-    echo "<li class='main_nav_item'><a href='logout.php'>Logout</a></li>";
-}						}
-	?>
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
