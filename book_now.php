@@ -1,3 +1,21 @@
+<?php
+session_start();
+require_once 'config/connect.php';
+
+if (empty($_SESSION['id'])) {
+    header('location: sign-in.php');
+} else {
+    $id = $_SESSION['id'];
+    $sql = $conn->prepare("SELECT * FROM `tbl_users` WHERE `id`='$id'");
+    $sql->execute();
+    $fetch = $sql->fetch();
+    
+// Fetch all data from the unpaid_tickets table
+$selectQuery = "SELECT * FROM unpaid_tickets";
+$stmt = $conn->query($selectQuery);
+$unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -431,3 +449,5 @@
 </body>
 
 </html>
+<?php
+}
