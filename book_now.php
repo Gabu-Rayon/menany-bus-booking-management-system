@@ -244,7 +244,9 @@ th {
                                             <div class="row">
                                                 <div class="col-md-6 mb-4">
                                                     <div class="form-outline">
-                                                        <label for="email" class="text-light">Amount to Pay </label>
+                                                        <label for="amount_topay" class="text-dark">Amount to
+                                                            Pay <strong><i> Kshs</i></strong>
+                                                        </label>
                                                         <input id="amount_paid" class="form-control" name="amount_paid"
                                                             type="number" value="<?php echo $amount_topay; ?>">
                                                     </div>
@@ -255,44 +257,81 @@ th {
                                                             Method</label>
                                                         <select class="form-select" name="type_payment"
                                                             id="paymentMethodSelect">
-                                                            <option value="mpesa">Mpesa</option>
-                                                            <option value="masterCard">Master Card</option>
-                                                            <option value="visaCard">Visa Card</option>
-                                                            <option value="bankAccount">Bank Account</option>
+
+                                                            <option value="select_payment">Please select Payment method
+                                                            </option>
+                                                            <option value="mpesa"><strong>Mpesa</strong></option>
+                                                            <option value="masterCard"><strong>Master Card</strong>
+                                                            </option>
+                                                            <option value="visaCard"><strong>Visa Card</strong></option>
+                                                            <option value="bankAccount"><strong>Bank Account</strong>
+                                                            </option>
                                                         </select>
-                                                    </div>
+                                                    </div><br>
                                                     <!-- Input fields for specific payment methods -->
                                                     <div class="payment-fields" id="mpesaFields" style="display: none;">
                                                         <p>
-                                                            <!-- Add fields for Mpesa -->
-                                                            Mpesa-specific input fields...
+                                                        <ul>
+                                                            <li><strong>Agent No :</strong> 149890</li>
+                                                            <li><strong>Store Number :</strong> 890941</li>
+                                                            <li><strong>Account Name :</strong> Menany Buses Sacco</li>
+                                                        </ul>
                                                         </p>
+
+                                                        <label class="form-label" for="mpesa-code"><small>Enter Mpesa
+                                                                code after Payment</small></label>
+                                                        <input id="mpesa_ref_no" class="form-control"
+                                                            name="mpesa_ref_no" type="number" placeholder="Mpesa code">
                                                     </div>
                                                     <div class="payment-fields" id="masterCardFields"
                                                         style="display: none;">
-                                                        <p>
-                                                            <!-- Add fields for Master Card -->
-                                                            Master Card-specific input fields...
-                                                        </p>
+                                                        <input id="master_card_no" class="form-control"
+                                                            name="mastercard_no" type="number"
+                                                            placeholder="Master Card Number"><br>
+                                                        <input id="mastercard_username" class="form-control"
+                                                            name="mastercard_username" type="text"
+                                                            placeholder="Master card Username"><br>
+                                                        <input id="mastercard_valid" class="form-control"
+                                                            name="mastercard_valid" type="date"
+                                                            placeholder="Valid Until">
+
                                                     </div>
                                                     <div class="payment-fields" id="visaCardFields"
                                                         style="display: none;">
-                                                        <p>
-                                                            <!-- Add fields for Visa Card -->
-                                                            Visa Card-specific input fields...
-                                                        </p>
+                                                        <input id="visa_card_no" class="form-control" name="visacard_no"
+                                                            type="number" placeholder="Visa Card Number"><br>
+                                                        <input id="visacard_username" class="form-control"
+                                                            name="visacard_username" type="text"
+                                                            placeholder="Visa card Username"><br>
+                                                        <input id="mastercard_valid" class="form-control"
+                                                            name="visacard_valid" type="date" placeholder="Valid Until">
+
                                                     </div>
-                                                    <div class="payment-fields" id="bankAccountFields" style="display: none;">
+                                                    <div class="payment-fields" id="bankAccountFields"
+                                                        style="display: none;">
                                                         <p>
-                                                            <!-- Add fields for Bank Account -->
-                                                            Bank Account-specific input fields...
+                                                        <ul>
+                                                            <li><strong>Account No : </strong>1498 9990 1500 6756</li>
+                                                            <li><strong>Bank :</strong> Standard Chartered Bank
+                                                                <i><small>(Any Branch countrywide)</small></i>
+                                                            </li>
+                                                            <li><strong>Account Name : </strong>Menany Buses Sacco</li>
+                                                        </ul>
                                                         </p>
+                                                        <input id="brach_name" class="form-control" name="branch_name"
+                                                            type="text" placeholder="Branch Name"><br>
+                                                        <input id="payment_date" class="form-control"
+                                                            name="bankpayment_date" type="date"
+                                                            placeholder="Payment Date">
+
                                                     </div>
                                                 </div>
                                             </div>
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+                                            <button type="submit" name="ticket_payment" class="btn btn-primary">Proceed
+                                                to
+                                                Checkout</button>
                                         </form>
                                     </div>
                                 </div>
