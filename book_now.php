@@ -10,12 +10,11 @@ if (empty($_SESSION['id'])) {
     $sql->execute();
     $fetch = $sql->fetch();
     $cust_id = $fetch['id'];
-    
-// Fetch all data from the unpaid_tickets table
-$selectQuery = "SELECT * FROM unpaid_tickets WHERE `customer_id` ='$cust_id'" ;
-$stmt = $conn->query($selectQuery);
-$unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
+
+    // Fetch all data from the unpaid_tickets table
+    $selectQuery = "SELECT * FROM unpaid_tickets WHERE `customer_id` ='$cust_id'" ;
+    $stmt = $conn->query($selectQuery);
+    $unpaidTicketsData = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -200,20 +199,27 @@ th {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($unpaidTicketsData as $ticket) { 
-                                    $amount_topay = $ticket['fare_amount'];
-
-                                    ?>
+                                    <?php foreach ($unpaidTicketsData as $ticket) {
+        $amount_topay = $ticket['fare_amount']; ?>
                                     <tr>
-                                        <td><?php echo $ticket['bus']; ?></td>
-                                        <td><?php echo $ticket['bus_plate']; ?></td>
-                                        <td><?php echo $ticket['from_terminal']; ?></td>
-                                        <td><?php echo $ticket['to_destination']; ?></td>
-                                        <td><?php echo $ticket['departure']; ?></td>
-                                        <td><?php echo $ticket['eta']; ?></td>
-                                        <td><?php echo $ticket['fare_amount']; ?></td>
-                                        <td><?php echo $ticket['how_many']; ?></td>
-                                        <td><?php echo $ticket['luggage_count']; ?></td>
+                                        <td><?php echo $ticket['bus']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['bus_plate']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['from_terminal']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['to_destination']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['departure']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['eta']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['fare_amount']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['how_many']; ?>
+                                        </td>
+                                        <td><?php echo $ticket['luggage_count']; ?>
+                                        </td>
                                         <td>
                                             <!-- Buttons for "Pay Ticket" and "Delete Ticket" -->
                                             <button <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -223,10 +229,12 @@ th {
                                         </td>
                                         <td>
                                             <button type="submit" name="delete_ticket" class="btn btn-danger"
-                                                value="<?php echo $ticket['id']; ?>">Delete Ticket</button>
+                                                value="<?php echo $ticket['id']; ?>">Delete
+                                                Ticket</button>
                                         </td>
                                     </tr>
-                                    <?php } ?>
+                                    <?php
+    } ?>
                                 </tbody>
                             </table>
                         </form>
@@ -239,7 +247,8 @@ th {
                                     <!-- Modal content ... -->
                                     <div class="modal-body">
                                         <!-- Payment form content -->
-                                        <form method="post" action="process_payment.php">
+                                        <div id="formErrors"></div>
+                                        <form method="post" action="process_tickets.php" id="paymentForm">
                                             <!-- Payment form fields here... -->
                                             <div class="row">
                                                 <div class="col-md-6 mb-4">
@@ -253,7 +262,8 @@ th {
                                                 </div>
                                                 <div class="col-md-6 mb-4">
                                                     <div class="form-outline">
-                                                        <label for="password" class="text-light">Select Payment
+                                                        <label for="select_paymentMethod" class="text-light">Select
+                                                            Payment
                                                             Method</label>
                                                         <select class="form-select" name="type_payment"
                                                             id="paymentMethodSelect">
@@ -281,30 +291,55 @@ th {
                                                         <label class="form-label" for="mpesa-code"><small>Enter Mpesa
                                                                 code after Payment</small></label>
                                                         <input id="mpesa_ref_no" class="form-control"
-                                                            name="mpesa_ref_no" type="number" placeholder="Mpesa code">
+                                                            name="mpesa_ref_no" type="text" placeholder="Mpesa code">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['mpesa_ref_no_error']) ? $_SESSION['mpesa_ref_no_error'] : ''; ?>
+                                                        </span>
+
                                                     </div>
                                                     <div class="payment-fields" id="masterCardFields"
                                                         style="display: none;">
                                                         <input id="master_card_no" class="form-control"
                                                             name="mastercard_no" type="number"
-                                                            placeholder="Master Card Number"><br>
+                                                            placeholder="Master Card Number">
+                                                        <span
+                                                            class="text-danger"><?php echo isset($_SESSION['master_card_no_error']) ? $_SESSION['master_card_no_error'] : ''; ?></span>
+
+                                                        <br>
                                                         <input id="mastercard_username" class="form-control"
                                                             name="mastercard_username" type="text"
-                                                            placeholder="Master card Username"><br>
+                                                            placeholder="Master card Username">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['master_card_username_error']) ? $_SESSION['master_card_username_error'] : ''; ?></span>
+
+                                                        <br>
                                                         <input id="mastercard_valid" class="form-control"
                                                             name="mastercard_valid" type="date"
                                                             placeholder="Valid Until">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['master_card_username_error']) ? $_SESSION['master_card_username_error'] : ''; ?></span>
+
 
                                                     </div>
                                                     <div class="payment-fields" id="visaCardFields"
                                                         style="display: none;">
                                                         <input id="visa_card_no" class="form-control" name="visacard_no"
-                                                            type="number" placeholder="Visa Card Number"><br>
+                                                            type="number" placeholder="Visa Card Number">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['visa_card_no_error']) ? $_SESSION['visa_card_no_error'] : ''; ?></span>
+
+                                                        <br>
                                                         <input id="visacard_username" class="form-control"
                                                             name="visacard_username" type="text"
-                                                            placeholder="Visa card Username"><br>
+                                                            placeholder="Visa card Username">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['visa_card_error']) ? $_SESSION['visa_card_error'] : ''; ?></span>
+
+                                                        <br>
                                                         <input id="mastercard_valid" class="form-control"
                                                             name="visacard_valid" type="date" placeholder="Valid Until">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['visa_card_valid_error']) ? $_SESSION['visa_card_valid_error'] : ''; ?></span>
 
                                                     </div>
                                                     <div class="payment-fields" id="bankAccountFields"
@@ -319,19 +354,26 @@ th {
                                                         </ul>
                                                         </p>
                                                         <input id="brach_name" class="form-control" name="branch_name"
-                                                            type="text" placeholder="Branch Name"><br>
+                                                            type="text" placeholder="Branch Name">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['bank_name_error']) ? $_SESSION['bank_name_error'] : ''; ?></span>
+
+                                                        <br>
                                                         <input id="payment_date" class="form-control"
                                                             name="bankpayment_date" type="date"
                                                             placeholder="Payment Date">
+                                                        <span class="text-danger">
+                                                            <?php echo isset($_SESSION['bank_payment_date_error']) ? $_SESSION['bank_payment_date_error'] : ''; ?></span>
 
                                                     </div>
                                                 </div>
                                             </div>
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" name="ticket_payment" class="btn btn-primary">Proceed
-                                                to
-                                                Checkout</button>
+                                            <button type="submit" name="ticket_payment" id="checkoutBtn"
+                                                class="btn btn-primary">
+                                                Proceed to Checkout
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -540,6 +582,62 @@ th {
             $("#" + selectedPaymentMethod + "Fields").show();
         });
     });
+
+
+
+    $(document).ready(function() {
+        // Event handler for the payment method select
+        $("#paymentMethodSelect").change(function() {
+            // Get the selected payment method
+            var selectedPaymentMethod = $(this).val();
+            // Hide all payment fields
+            $(".payment-fields").hide();
+            // Show the payment fields for the selected payment method
+            $("#" + selectedPaymentMethod + "Fields").show();
+        });
+
+        // Event handler for "Proceed to Checkout" button
+        $("#checkoutBtn").click(function() {
+            // Clear previous errors
+            $("#formErrors").empty();
+
+            // Get the selected payment method
+            var selectedPaymentMethod = $("#paymentMethodSelect").val();
+
+            // Validate form fields based on the selected payment method
+            var isValid = true;
+            switch (selectedPaymentMethod) {
+                case "mpesa":
+                    // Validate Mpesa-specific fields
+                    if ($("#mpesa_ref_no").val() === "") {
+                        isValid = false;
+                        $("#formErrors").append("<p>Please enter Mpesa code.</p>");
+                    }
+                    break;
+                case "masterCard":
+                    // Validate Master Card-specific fields
+                    // Add more validation here if needed
+                    break;
+                case "visaCard":
+                    // Validate Visa Card-specific fields
+                    // Add more validation here if needed
+                    break;
+                case "bankAccount":
+                    // Validate Bank Account-specific fields
+                    // Add more validation here if needed
+                    break;
+                default:
+                    isValid = false;
+                    $("#formErrors").append("<p>Please select a valid payment method.</p>");
+                    break;
+            }
+
+            // If the form is valid, submit it
+            if (isValid) {
+                $("#paymentForm").submit();
+            }
+        });
+    });
     </script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="styles/bootstrap4/popper.js"></script>
@@ -551,4 +649,5 @@ th {
 
 </html>
 <?php
+
 }
