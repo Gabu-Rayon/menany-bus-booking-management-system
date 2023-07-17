@@ -262,25 +262,27 @@ th {
                                                         </select>
                                                     </div>
                                                     <!-- Input fields for specific payment methods -->
-                                                    <div class="payment-fields" id="mpesaFields">
+                                                    <div class="payment-fields" id="mpesaFields" style="display: none;">
                                                         <p>
                                                             <!-- Add fields for Mpesa -->
                                                             Mpesa-specific input fields...
                                                         </p>
                                                     </div>
-                                                    <div class="payment-fields" id="masterCardFields">
+                                                    <div class="payment-fields" id="masterCardFields"
+                                                        style="display: none;">
                                                         <p>
                                                             <!-- Add fields for Master Card -->
                                                             Master Card-specific input fields...
                                                         </p>
                                                     </div>
-                                                    <div class="payment-fields" id="visaCardFields">
+                                                    <div class="payment-fields" id="visaCardFields"
+                                                        style="display: none;">
                                                         <p>
                                                             <!-- Add fields for Visa Card -->
                                                             Visa Card-specific input fields...
                                                         </p>
                                                     </div>
-                                                    <div class="payment-fields" id="bankAccountFields">
+                                                    <div class="payment-fields" id="bankAccountFields" style="display: none;">
                                                         <p>
                                                             <!-- Add fields for Bank Account -->
                                                             Bank Account-specific input fields...
