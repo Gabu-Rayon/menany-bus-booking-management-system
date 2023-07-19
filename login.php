@@ -35,7 +35,7 @@ if (count($row) > 0) {
     }
     session_start();
     $_SESSION['id'] = $row[0]['id'];
-    $resp['redirect'] = "offers.php";
+    $resp['redirect'] = "book.php";
     $resp['status'] = true;
     echo json_encode($resp);
     exit;

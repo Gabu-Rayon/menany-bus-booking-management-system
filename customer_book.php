@@ -235,9 +235,10 @@ if (isset($_POST['book_now'])) {
                                 <ul class="main_nav_list">
                                     <li class="main_nav_item"><a href="index.php">home</a></li>
                                     <li class="main_nav_item"><a href="about.php">about us</a></li>
-                                    <li class="main_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="main_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
                                     <li class="main_nav_item"><a href="contact.php">contact</a></li>
+                                    <li class="main_nav_item"><a href="logout.php">Logout</a></li>
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -289,9 +290,10 @@ if (isset($_POST['book_now'])) {
                 <ul>
                     <li class="menu_item"><a href="#">home</a></li>
                     <li class="menu_item"><a href="about.php">about us</a></li>
-                    <li class="menu_item"><a href="offers.php">offers</a></li>
+                    <li class="menu_item"><a href="book.php">Book Now</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
+                    <li class="menu_item"><a href="logout.php">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -380,7 +382,7 @@ if (isset($_POST['book_now'])) {
 
                                 <button type="button" id="form_cancel_button"
                                     class="form_submit_button button trans_200 m-3">
-                                    <a href="offers.php">Cancel<span></span><span></span><span></span></a>
+                                    <a href="book.php">Cancel<span></span><span></span><span></span></a>
                                 </button>
                             </div>
                         </form>
@@ -544,9 +546,10 @@ if (isset($_POST['book_now'])) {
                                 <ul class="footer_nav_list">
                                     <li class="footer_nav_item"><a href="#">home</a></li>
                                     <li class="footer_nav_item"><a href="about.php">about us</a></li>
-                                    <li class="footer_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="footer_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="footer_nav_item"><a href="blog.php">news</a></li>
                                     <li class="footer_nav_item"><a href="contact.php">contact</a></li>
+                                    <li class="footer_nav_item"><a href="logout.php">Logout</a></li>
                                 </ul>
                             </div>
                         </div>

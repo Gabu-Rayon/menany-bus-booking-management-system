@@ -104,9 +104,10 @@ th {
                                 <ul class="main_nav_list">
                                     <li class="main_nav_item"><a href="index.php">home</a></li>
                                     <li class="main_nav_item"><a href="about.php">about us</a></li>
-                                    <li class="main_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="main_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
                                     <li class="main_nav_item"><a href="contact.php">contact</a></li>
+                                    <li class="main_nav_item"><a href="logout.php">Logout</a></li>
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -158,9 +159,10 @@ th {
                 <ul>
                     <li class="menu_item"><a href="#">home</a></li>
                     <li class="menu_item"><a href="about.php">about us</a></li>
-                    <li class="menu_item"><a href="offers.php">offers</a></li>
+                    <li class="menu_item"><a href="book.php">Book Now</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
+                    <li class="menu_item"><a href="logout.php">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -549,9 +551,10 @@ th {
                                 <ul class="footer_nav_list">
                                     <li class="footer_nav_item"><a href="#">home</a></li>
                                     <li class="footer_nav_item"><a href="about.php">about us</a></li>
-                                    <li class="footer_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="footer_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="footer_nav_item"><a href="blog.php">news</a></li>
                                     <li class="footer_nav_item"><a href="contact.php">contact</a></li>
+                                    <li class="footer_nav_item"><a href="logout.php">logout</a></li>
                                 </ul>
                             </div>
                         </div>

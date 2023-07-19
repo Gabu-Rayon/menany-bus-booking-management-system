@@ -68,7 +68,7 @@
                                 <ul class="main_nav_list">
                                     <li class="main_nav_item"><a href="index.php">home</a></li>
                                     <li class="main_nav_item"><a href="about.php">about us</a></li>
-                                    <li class="main_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="main_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
                                     <li class="main_nav_item"><a href="contact.php">contact</a></li>
                                 </ul>
@@ -122,7 +122,7 @@
                 <ul>
                     <li class="menu_item"><a href="#">home</a></li>
                     <li class="menu_item"><a href="about.php">about us</a></li>
-                    <li class="menu_item"><a href="offers.php">offers</a></li>
+                    <li class="menu_item"><a href="book.php">Book Now</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
                 </ul>
@@ -213,7 +213,7 @@
                     if (res['status']) // if login successful redirect user to booking.php page.
                     {
                         location.href =
-                            "offers.php"; // redirect user to sbooking.php location/page.
+                            "book.php"; // redirect user to sbooking.php location/page.
                     } else {
 
                         var errorMessage = '';
@@ -395,9 +395,10 @@
                                 <ul class="footer_nav_list">
                                     <li class="footer_nav_item"><a href="#">home</a></li>
                                     <li class="footer_nav_item"><a href="about.php">about us</a></li>
-                                    <li class="footer_nav_item"><a href="offers.php">offers</a></li>
+                                    <li class="footer_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="footer_nav_item"><a href="blog.php">news</a></li>
                                     <li class="footer_nav_item"><a href="contact.php">contact</a></li>
+                                    <li class="footer_nav_item"><a href="logout.php">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
