@@ -81,7 +81,15 @@ th {
                                 </ul>
                             </div>
                             <div class="user_box ml-auto">
-                                <div class="user_box_login user_box_link"><a href="sign-in.php">Sign in</a></div>
+                                <?php
+                                        if (isset($_SESSION['id'])) {
+                                          // User is logged in, display the "Logout" link
+                                       echo '<div class="user_box_login user_box_link"><a href="logout.php">logout</a></div>';
+                                         } else {
+                                       // User is not logged in, display the "Sign In" link 
+                                        echo '<div class="user_box_login user_box_link"><a href="sign-in.php">Sign in</a></div>';
+                                      }
+                                     ?>
                                 <div class="user_box_register user_box_link"><a href="sign-up.php">Sign Up</a></div>
                             </div>
                         </div>
@@ -107,7 +115,15 @@ th {
                                     <li class="main_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="main_nav_item"><a href="blog.php">news</a></li>
                                     <li class="main_nav_item"><a href="contact.php">contact</a></li>
-                                    <li class="main_nav_item"><a href="logout.php">Logout</a></li>
+                                    <?php
+                                        if (isset($_SESSION['id'])) {
+                                          // User is logged in, display the "Logout" link
+                                       echo '<li class="main_nav_item"><a href="logout.php">Logout</a></li>';
+                                         } else {
+                                       // User is not logged in, display the "Sign In" link 
+                                        echo '<li class="main_nav_item"><a href="sign-in.php">Sign In</a></li>';
+                                      }
+                                     ?>
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -162,7 +178,15 @@ th {
                     <li class="menu_item"><a href="book.php">Book Now</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
-                    <li class="menu_item"><a href="logout.php">Logout</a></li>
+                    <?php
+                                        if (isset($_SESSION['id'])) {
+                                            // User is logged in, display the "Logout" link
+                                            echo '<li class="menu_item"><a href="logout.php">Logout</a></li>';
+                                        } else {
+                                            // User is not logged in, display the "Sign In" link
+                                            echo '<li class="menu_item"><a href="sign-in.php">Sign In</a></li>';
+                                        }
+                                     ?>
                 </ul>
             </div>
         </div>
@@ -554,7 +578,16 @@ th {
                                     <li class="footer_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="footer_nav_item"><a href="blog.php">news</a></li>
                                     <li class="footer_nav_item"><a href="contact.php">contact</a></li>
-                                    <li class="footer_nav_item"><a href="logout.php">logout</a></li>
+
+                                    <?php
+                                        if (isset($_SESSION['id'])) {
+                                            // User is logged in, display the "Logout" link
+                                            echo '<li class="footer_nav_item"><a href="logout.php">Logout</a></li>';
+                                        } else {
+                                            // User is not logged in, display the "Sign In" link
+                                            echo ' <li class="footer_nav_item"><a href="sign-in.php">Sign In</a></li>';
+                                        }
+                                     ?>
                                 </ul>
                             </div>
                         </div>
