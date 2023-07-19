@@ -229,7 +229,7 @@ th {
                                         </td>
                                         <td>
                                             <button type="submit" name="delete_ticket" class="btn btn-danger"
-                                                value="<?php echo $ticket['id']; ?>">Delete
+                                                onclick="confirmDelete(<?php echo $ticket['id']; ?>)">Delete
                                                 Ticket</button>
                                         </td>
                                     </tr>
@@ -639,6 +639,31 @@ th {
         });
     });
     </script>
+
+    <script>
+    function confirmDelete(ticketId) {
+        if (confirm("Are you sure you want to delete this ticket?")) {
+            // If the user clicks "OK", proceed with the deletion
+            deleteTicket(ticketId);
+        }
+    }
+
+    function deleteTicket(ticketId) {
+        // Use AJAX to call the PHP script to delete the ticket
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Display an alert message after the ticket is deleted
+                alert("Ticket deleted successfully!");
+                // Reload the page after deletion or you can remove the ticket element from the DOM
+                location.reload();
+            }
+        };
+        xhttp.open("GET", "delete_ticket.php?ticketId=" + ticketId, true);
+        xhttp.send();
+    }
+    </script>
+
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="styles/bootstrap4/popper.js"></script>
     <script src="styles/bootstrap4/bootstrap.min.js"></script>
