@@ -129,7 +129,7 @@ if ($paidTicketsData) {
         const element = document.getElementById('receipt-content');
         const opt = {
             margin: 5,
-            filename: 'receipt.pdf',
+            filename: 'menanyBusTicket.pdf',
             image: {
                 type: 'jpeg',
                 quality: 0.98
