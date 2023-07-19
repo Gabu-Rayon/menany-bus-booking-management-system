@@ -102,9 +102,6 @@ if (isset($_POST['book_now'])) {
 }
 ?>
 
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 

@@ -53,7 +53,8 @@ if ($paidTicketsData) {
     <title>Check Out Receipt</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="pdfLibrary/html2pdf.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -63,7 +64,7 @@ if ($paidTicketsData) {
                 <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-lg-8 col-xl-6">
-                            <div class="card rounded-3 ">
+                            <div class="card rounded-3 " id="receipt-content">
 
                                 <div class="card-header text-center">
                                     <img src="images/bus.png"> Menany Buses Tickets
@@ -103,7 +104,7 @@ if ($paidTicketsData) {
                                         Journey<br>Menany Buses</p>
                                 </div>
                             </div><br>
-                            <button class="btn btn-primary" onclick="printSectionContent()"> Print
+                            <button class="btn btn-primary" onclick="printAndDownloadPDF()"> Print
 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-printer" viewBox="0 0 16 16">
@@ -124,44 +125,10 @@ if ($paidTicketsData) {
     <!--the JavaScript for printing only the card 
     -->
     <script>
-    function printSectionContent() {
-        const sectionContent = document.querySelector('section');
-        if (sectionContent) {
-            // Clone the section content
-            const clonedContent = sectionContent.cloneNode(true);
-
-            // Create a new window for printing
-            const printWindow = window.open('', '_blank');
-            printWindow.document.open();
-
-            // Write the cloned section content to the new window
-            printWindow.document.write('<!doctype html><html lang="en"><head>');
-            printWindow.document.write('<meta charset="utf-8">');
-            printWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1">');
-            printWindow.document.write('<title>Print Bus Ticket Receipt</title>');
-            printWindow.document.write(
-                '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">'
-            );
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(clonedContent
-                .innerHTML); // Use innerHTML to get only the content inside the section
-            printWindow.document.write('</body></html>');
-
-            // Close the document for writing
-            printWindow.document.close();
-
-            // Print the new window
-            printWindow.print();
-
-            // Close the new window after printing is done
-            printWindow.close();
-        }
-        createAndDownloadPDF(clonedContent.innerHTML);
-    }
-
-    function createAndDownloadPDF(htmlContent) {
+    function printAndDownloadPDF() {
+        const element = document.getElementById('receipt-content');
         const opt = {
-            margin: 10,
+            margin: 5,
             filename: 'receipt.pdf',
             image: {
                 type: 'jpeg',
@@ -177,10 +144,11 @@ if ($paidTicketsData) {
             }
         };
 
-        // Create the PDF from the HTML content using html2pdf.js
-        html2pdf().set(opt).from(htmlContent).save();
+        // Create the PDF
+        html2pdf().from(element).set(opt).save();
     }
     </script>
+
 </body>
 
 </html>

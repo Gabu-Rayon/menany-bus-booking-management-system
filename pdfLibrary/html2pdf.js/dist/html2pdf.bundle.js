@@ -19,7 +19,7 @@ return /******/ (function() { // webpackBootstrap
 /***/ "./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs3/core-js-stable/array/from.js ***!
-  \************************************************************/
+  \**************************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! core-js-pure/stable/array/from */ "./node_modules/core-js-pure/stable/array/from.js");
