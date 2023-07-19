@@ -641,14 +641,14 @@ th {
     </script>
 
     <script>
-    function confirmDelete(ticketId) {
+    function confirmDelete(id) {
         if (confirm("Are you sure you want to delete this ticket?")) {
             // If the user clicks "OK", proceed with the deletion
-            deleteTicket(ticketId);
+            deleteTicket(id);
         }
     }
 
-    function deleteTicket(ticketId) {
+    function deleteTicket(id) {
         // Use AJAX to call the PHP script to delete the ticket
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -659,7 +659,7 @@ th {
                 location.reload();
             }
         };
-        xhttp.open("GET", "delete_ticket.php?ticketId=" + ticketId, true);
+        xhttp.open("GET", "delete_ticket.php?id=" + id, true);
         xhttp.send();
     }
     </script>
