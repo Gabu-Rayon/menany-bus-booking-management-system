@@ -43,6 +43,9 @@ if ($paidTicketsData) {
     $amountPaid = $paidTicketsData['amount_paid'];
     $paymentMethod = $paidTicketsData['type_payment'];
 }
+
+// Destroy the session
+session_destroy();
 ?>
 <!doctype html>
 <html lang="en">
@@ -129,7 +132,7 @@ if ($paidTicketsData) {
         const element = document.getElementById('receipt-content');
         const opt = {
             margin: 5,
-            filename: 'menanyBusTicket.pdf',
+            filename: 'menany-Bus-Ticket.pdf',
             image: {
                 type: 'jpeg',
                 quality: 0.98
@@ -146,8 +149,18 @@ if ($paidTicketsData) {
 
         // Create the PDF
         html2pdf().from(element).set(opt).save();
+
+        // Show the alert message after printing and downloading
+        setTimeout(function() {
+            window.alert('Thank you for choosing our service! We appreciate your time we us.');
+
+            // Redirect to the login page (sign-in.php)
+            window.location.href = 'sign-in.php';
+        }, 1000); // Wait for 1 second (1000 milliseconds) before showing the alert
     }
     </script>
+
+
 
 </body>
 
