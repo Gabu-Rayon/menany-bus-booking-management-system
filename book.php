@@ -150,7 +150,7 @@ if(empty($_SESSION['id'])){
                     <li class="menu_item"><a href="book.php">Book Now</a></li>
                     <li class="menu_item"><a href="blog.php">news</a></li>
                     <li class="menu_item"><a href="contact.php">contact</a></li>
-                     <?php
+                    <?php
                                         if (isset($_SESSION['id'])) {
                                             // User is logged in, display the "Logout" link
                                             echo '<li class="menu_item"><a href="logout.php">Logout</a></li>';
@@ -168,7 +168,7 @@ if(empty($_SESSION['id'])){
         <div class="home">
             <div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/09.jpg"></div>
             <div class="home_content">
-                <div class="home_title">our offers</div>
+                <div class="home_title">our Tickets offers</div>
             </div>
         </div>
 
@@ -366,7 +366,15 @@ if(empty($_SESSION['id'])){
                                             <!-- Image by https://unsplash.com/@kensuarez -->
                                             <div class="offers_image_background"
                                                 style="background-image:url(images/05.jpg)"></div>
-                                            <div class="offer_name"><a href="single_listing.php">Nairobi to Meru</a>
+                                            <div class="offer_name">
+                                                <a href="single_listing.php  fs-6">
+
+                                                    <?php echo $row['from_city']; ?>
+
+                                                    <small> to </small>
+
+                                                    <?php echo $row['to_city']; ?>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -581,8 +589,8 @@ if(empty($_SESSION['id'])){
                                     <li class="footer_nav_item"><a href="book.php">Book Now</a></li>
                                     <li class="footer_nav_item"><a href="blog.php">news</a></li>
                                     <li class="footer_nav_item"><a href="contact.php">contact</a></li>
-                                    
-                                     <?php
+
+                                    <?php
                                         if (isset($_SESSION['id'])) {
                                             // User is logged in, display the "Logout" link
                                             echo '<li class="footer_nav_item"><a href="logout.php">Logout</a></li>';

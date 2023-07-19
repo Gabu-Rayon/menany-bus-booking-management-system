@@ -151,7 +151,7 @@
                                 <h1>Nairobi</h1>
                                 <h1>the Capital</h1>
                                 <div class="button home_slider_button">
-                                    <div class="button_bcg"></div><a href="#">explore
+                                    <div class="button_bcg"></div><a href="book.php">explore
                                         now<span></span><span></span><span></span></a>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                                 <h1>Meru</h1>
                                 <h1>the city of Eastern</h1>
                                 <div class="button home_slider_button">
-                                    <div class="button_bcg"></div><a href="#">explore
+                                    <div class="button_bcg"></div><a href="book.php">explore
                                         now<span></span><span></span><span></span></a>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                                 <h1>Maua</h1>
                                 <h1>the town in ridge of Mountains</h1>
                                 <div class="button home_slider_button">
-                                    <div class="button_bcg"></div><a href="#">explore
+                                    <div class="button_bcg"></div><a href="book.php">explore
                                         now<span></span><span></span><span></span></a>
                                 </div>
                             </div>
@@ -788,12 +788,12 @@
                                         <!-- Image by https://unsplash.com/@kensuarez -->
                                         <div class="offers_image_background"
                                             style="background-image:url(images/17.jpg)"></div>
-                                        <div class="offer_name"><a href="#">grand castle</a></div>
+                                        <div class="offer_name"><a href="#">Maua Town</a></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="offers_content">
-                                        <div class="offers_price">$70<span>per night</span></div>
+                                        <div class="offers_price">Ksh 70<span>per ticket</span></div>
                                         <div class="rating_r rating_r_4 offers_rating">
                                             <i></i>
                                             <i></i>
@@ -828,12 +828,12 @@
                                         <!-- Image by Egzon Bytyqi -->
                                         <div class="offers_image_background"
                                             style="background-image:url(images/18.jpg)"></div>
-                                        <div class="offer_name"><a href="#">turkey hills</a></div>
+                                        <div class="offer_name"><a href="#">Meru Town</a></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="offers_content">
-                                        <div class="offers_price">$50<span>per night</span></div>
+                                        <div class="offers_price">Ksh 1500<span>per ticket</span></div>
                                         <div class="rating_r rating_r_4 offers_rating">
                                             <i></i>
                                             <i></i>
@@ -868,12 +868,12 @@
                                         <!-- Image by https://unsplash.com/@nevenkrcmarek -->
                                         <div class="offers_image_background"
                                             style="background-image:url(images/19.jpg)"></div>
-                                        <div class="offer_name"><a href="#">island dream</a></div>
+                                        <div class="offer_name"><a href="#">Nairobi</a></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="offers_content">
-                                        <div class="offers_price">$90<span>per night</span></div>
+                                        <div class="offers_price">Ksh 900<span>per ticket</span></div>
                                         <div class="rating_r rating_r_4 offers_rating">
                                             <i></i>
                                             <i></i>
@@ -908,12 +908,12 @@
                                         <!-- Image by https://unsplash.com/@mantashesthaven -->
                                         <div class="offers_image_background"
                                             style="background-image:url(images/offer_4.jpg)"></div>
-                                        <div class="offer_name"><a href="#">travel light</a></div>
+                                        <div class="offer_name"><a href="#">Nanyuki</a></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="offers_content">
-                                        <div class="offers_price">$30<span>per night</span></div>
+                                        <div class="offers_price">Ksh 700<span>per ticket</span></div>
                                         <div class="rating_r rating_r_4 offers_rating">
                                             <i></i>
                                             <i></i>
@@ -1143,8 +1143,8 @@
                             <div class="trending_image"><img src="images/17.jpg" alt="https://unsplash.com/@fransaraco">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">grand hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Maua Town</a></div>
+                                <div class="trending_price">From Ksh 1500</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1156,8 +1156,8 @@
                             <div class="trending_image"><img src="images/03.jpg" alt="https://unsplash.com/@grovemade">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">mars hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Chuka Town</a></div>
+                                <div class="trending_price">From Ksh 1600</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1169,8 +1169,8 @@
                             <div class="trending_image"><img src="images/18.jpg" alt="https://unsplash.com/@jbriscoe">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">queen hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Meru Town</a></div>
+                                <div class="trending_price">From Ksh 1500</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1182,8 +1182,8 @@
                             <div class="trending_image"><img src="images/02.jpg" alt="https://unsplash.com/@oowgnuj">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">mars hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Chuka Town</a></div>
+                                <div class="trending_price">From Ksh 1700</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1195,8 +1195,8 @@
                             <div class="trending_image"><img src="images/03.jpg" alt="https://unsplash.com/@mindaugas">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">grand hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Maua Town</a></div>
+                                <div class="trending_price">From Ksh 1900</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1208,8 +1208,8 @@
                             <div class="trending_image"><img src="images/17.jpg" alt="https://unsplash.com/@itsnwa">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">mars hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Meru Town</a></div>
+                                <div class="trending_price">From Ksh 1800</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1221,8 +1221,8 @@
                             <div class="trending_image"><img src="images/trend_6.png" alt="https://unsplash.com/@rktkn">
                             </div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">queen hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Meru Town</a></div>
+                                <div class="trending_price">From Ksh 1800</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
@@ -1234,8 +1234,8 @@
                             <div class="trending_image"><img src="images/trend_6.png"
                                     alt="https://unsplash.com/@thoughtcatalog"></div>
                             <div class="trending_content">
-                                <div class="trending_title"><a href="#">mars hotel</a></div>
-                                <div class="trending_price">From $182</div>
+                                <div class="trending_title"><a href="#">Chuka Town</a></div>
+                                <div class="trending_price">From Ksh 1500</div>
                                 <div class="trending_location">madrid, spain</div>
                             </div>
                         </div>
