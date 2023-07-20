@@ -2,40 +2,7 @@
 include("inc/header.php");
 require_once("db-connect/config.php");
 
-// Process the form data after submission
-if (isset($_POST['update'])) {
-    $scheduleId = $_POST['schedule_id'];
-    $busId = $_POST['bus_id'];
-    $fromLocation = $_POST['from_location'];
-    $toLocation = $_POST['to_location'];
-    $departureTime = $_POST['departure_time'];
-    $eta = $_POST['eta'];
-    $status = $_POST['status'];
-    $availability = $_POST['availability'];
-    $price = $_POST['price'];
-
-    // Update the schedule record in the database
-    $updateQuery = "UPDATE schedule_list SET bus_id = :busId, from_location = :fromLocation, 
-                    to_location = :toLocation, departure_time = :departureTime, eta = :eta, status = :status, 
-                    availability = :availability, price = :price WHERE id = :scheduleId";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
-    $stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
-    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
-    $stmt->bindParam(':price', $price, PDO::PARAM_INT);
-    $stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Redirect back to the schedule list page after updating
-    header("Location: schedule_list.php");
-    exit();
-}
-
-// Retrieve the schedule record to edit
+// Check if the schedule ID is provided in the URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $scheduleId = $_GET['id'];
 
@@ -56,12 +23,42 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     header("Location: schedule_list.php");
     exit();
 }
+
+// Process the form data after submission
+if (isset($_POST['update'])) {
+    $busId = $_POST['bus_id'];
+    $fromLocation = $_POST['from_location'];
+    $toLocation = $_POST['to_location'];
+    $departureTime = $_POST['departure_time'];
+    $eta = $_POST['eta'];
+    $status = $_POST['status'];
+    $availability = $_POST['availability'];
+    $price = $_POST['price'];
+
+    // Update the schedule record in the database
+    $updateQuery = "UPDATE schedule_list SET bus_id = :busId, from_location = :fromLocation, to_location = :toLocation,
+                    departure_time = :departureTime, eta = :eta, status = :status, availability = :availability,
+                    price = :price WHERE id = :scheduleId";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
+    $stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
+    $stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
+    $stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
+    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
+    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
+    $stmt->bindParam(':price', $price, PDO::PARAM_INT);
+    $stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Redirect back to the schedule list page after updating
+    header("Location: schedule_list.php");
+    exit();
+}
 ?>
 
 <body class="app">
-    <?php
-    include("inc/sidebar.php");
-    ?>
+    <?php include("inc/sidebar.php"); ?>
     <div class="app-wrapper">
         <div class="app-content pt-3 p-md-3 p-lg-4">
             <div class="container-xl">
@@ -73,93 +70,76 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                         <a href="schedule_list.php" class="btn btn-primary">Schedule List</a>
                     </div>
                 </div>
+                <!--//row-->
+
                 <div class="row g-4">
                     <h2>Edit Schedule</h2>
+
                     <form action="#" method="POST">
-                        <input type="hidden" name="schedule_id" value="<?php echo $scheduleData['id']; ?>">
-                        <div class="mb-3">
-                            <label class="form-label">Bus</label>
-                            <select class="form-select" name="bus_id" required>
-                                <?php
-                                // Fetch all buses from the bus table
-                                $busQuery = "SELECT id, name FROM bus";
-                                $stmt = $conn->prepare($busQuery);
-                                $stmt->execute();
-                                $buses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                foreach ($buses as $bus) {
-                                    $selected = ($bus['id'] == $scheduleData['bus_id']) ? 'selected' : '';
-                                    echo "<option value='{$bus['id']}' {$selected}>{$bus['name']}</option>";
-                                }
-                                ?>
-                            </select>
+                        <div class="name mb-3">
+                            <label class="sr-only" for="bus_id">Bus ID:</label>
+                            <input id="bus_id" name="bus_id" type="text" class="form-control"
+                                value="<?php echo $scheduleData['bus_id']; ?>" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">From Location</label>
-                            <select class="form-select" name="from_location" required>
-                                <?php
-                                // Fetch all locations from the location table
-                                $locationQuery = "SELECT id, name FROM location";
-                                $stmt = $conn->prepare($locationQuery);
-                                $stmt->execute();
-                                $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                foreach ($locations as $location) {
-                                    $selected = ($location['id'] == $scheduleData['from_location']) ? 'selected' : '';
-                                    echo "<option value='{$location['id']}' {$selected}>{$location['name']}</option>";
-                                }
-                                ?>
-                            </select>
+                        <!--//form-group-->
+                        <div class="from_location mb-3">
+                            <label class="sr-only" for="from_location">From Location:</label>
+                            <input id="from_location" name="from_location" type="text" class="form-control"
+                                value="<?php echo $scheduleData['from_location']; ?>" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">To Location</label>
-                            <select class="form-select" name="to_location" required>
-                                <?php
-                                // Fetch all locations from the location table
-                                foreach ($locations as $location) {
-                                    $selected = ($location['id'] == $scheduleData['to_location']) ? 'selected' : '';
-                                    echo "<option value='{$location['id']}' {$selected}>{$location['name']}</option>";
-                                }
-                                ?>
-                            </select>
+                        <!--//form-group-->
+                        <div class="to_location mb-3">
+                            <label class="sr-only" for="to_location">To Location:</label>
+                            <input id="to_location" name="to_location" type="text" class="form-control"
+                                value="<?php echo $scheduleData['to_location']; ?>" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Departure Time</label>
-                            <input type="text" class="form-control" name="departure_time"
+                        <!--//form-group-->
+                        <div class="departure_time mb-3">
+                            <label class="sr-only" for="departure_time">Departure Time:</label>
+                            <input id="departure_time" name="departure_time" type="text" class="form-control"
                                 value="<?php echo $scheduleData['departure_time']; ?>" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">ETA</label>
-                            <input type="text" class="form-control" name="eta"
+                        <!--//form-group-->
+                        <div class="eta mb-3">
+                            <label class="sr-only" for="eta">ETA:</label>
+                            <input id="eta" name="eta" type="text" class="form-control"
                                 value="<?php echo $scheduleData['eta']; ?>" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" name="status" required>
-                                <option value="0" <?php echo ($scheduleData['status'] == 0) ? 'selected' : ''; ?>>
-                                    Inactive</option>
-                                <option value="1" <?php echo ($scheduleData['status'] == 1) ? 'selected' : ''; ?>>Active
+                        <!--//form-group-->
+                        <div class="status mb-3">
+                            <label class="sr-only" for="status">Status:</label>
+                            <select name="status" class="form-select" required>
+                                <option value="0" <?php if ($scheduleData['status'] == 0) echo 'selected'; ?>>Inactive
+                                </option>
+                                <option value="1" <?php if ($scheduleData['status'] == 1) echo 'selected'; ?>>Active
                                 </option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Availability</label>
-                            <input type="number" class="form-control" name="availability"
+                        <!--//form-group-->
+                        <div class="availability mb-3">
+                            <label class="sr-only" for="availability">Availability:</label>
+                            <input id="availability" name="availability" type="text" class="form-control"
                                 value="<?php echo $scheduleData['availability']; ?>" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Price</label>
-                            <input type="number" class="form-control" name="price"
+                        <!--//form-group-->
+                        <div class="price mb-3">
+                            <label class="sr-only" for="price">Price:</label>
+                            <input id="price" name="price" type="text" class="form-control"
                                 value="<?php echo $scheduleData['price']; ?>" required>
                         </div>
+                        <!--//form-group-->
                         <div class="text-center">
-                            <input type="submit" name="update" class="btn btn-primary" value="Update">
+                            <input id="submit" name="update" type="submit" class="btn btn-primary" value="Update">
                         </div>
                     </form>
                 </div>
             </div>
+            <!--//container-fluid-->
         </div>
+        <!--//app-content-->
+
     </div>
+    <!--//app-wrapper-->
 
     <!-- Javascript -->
     <script src="assets/plugins/bootstrap/ppopper.min.js"></script>
