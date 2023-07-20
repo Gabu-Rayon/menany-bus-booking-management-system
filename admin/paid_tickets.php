@@ -1,5 +1,10 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Fetch data from the paid_tickets table

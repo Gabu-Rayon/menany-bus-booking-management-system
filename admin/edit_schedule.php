@@ -1,5 +1,10 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Fetch data from the bus table for populating the bus dropdown menu
@@ -22,57 +27,57 @@ $toLocations = $toLocationStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Process the form data after submission
 if (isset($_POST['update_schedule'])) {
-    $scheduleId = $_POST['schedule_id'];
-    $busId = $_POST['bus_id'];
-    $fromLocation = $_POST['from_location'];
-    $toLocation = $_POST['to_location'];
-    $departureTime = $_POST['departure_time'];
-    $eta = $_POST['eta'];
-    $status = $_POST['status'];
-    $availability = $_POST['availability'];
-    $price = $_POST['price'];
+$scheduleId = $_POST['schedule_id'];
+$busId = $_POST['bus_id'];
+$fromLocation = $_POST['from_location'];
+$toLocation = $_POST['to_location'];
+$departureTime = $_POST['departure_time'];
+$eta = $_POST['eta'];
+$status = $_POST['status'];
+$availability = $_POST['availability'];
+$price = $_POST['price'];
 
-    // Update the schedule record in the schedule_list table
-    $updateQuery = "UPDATE schedule_list SET bus_id = :busId, from_location = :fromLocation, to_location = :toLocation, 
-                    departure_time = :departureTime, eta = :eta, status = :status, availability = :availability, price = :price 
-                    WHERE id = :scheduleId";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
-    $stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
-    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
-    $stmt->bindParam(':price', $price, PDO::PARAM_STR);
-    $stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
-    $stmt->execute();
+// Update the schedule record in the schedule_list table
+$updateQuery = "UPDATE schedule_list SET bus_id = :busId, from_location = :fromLocation, to_location = :toLocation,
+departure_time = :departureTime, eta = :eta, status = :status, availability = :availability, price = :price
+WHERE id = :scheduleId";
+$stmt = $conn->prepare($updateQuery);
+$stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
+$stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
+$stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
+$stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
+$stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+$stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
+$stmt->bindParam(':price', $price, PDO::PARAM_STR);
+$stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
+$stmt->execute();
 
-    // Redirect back to the schedule_list page after updating the schedule
-    header("Location: schedule_list.php");
-    exit();
+// Redirect back to the schedule_list page after updating the schedule
+header("Location: schedule_list.php");
+exit();
 }
 
 // Retrieve the schedule record to edit
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $scheduleId = $_GET['id'];
+$scheduleId = $_GET['id'];
 
-    // Fetch schedule record based on the ID
-    $selectQuery = "SELECT * FROM schedule_list WHERE id = :scheduleId";
-    $stmt = $conn->prepare($selectQuery);
-    $stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
-    $stmt->execute();
-    $scheduleData = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch schedule record based on the ID
+$selectQuery = "SELECT * FROM schedule_list WHERE id = :scheduleId";
+$stmt = $conn->prepare($selectQuery);
+$stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
+$stmt->execute();
+$scheduleData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$scheduleData) {
-        // Schedule record not found, redirect back to the schedule_list page
-        header("Location: schedule_list.php");
-        exit();
-    }
+if (!$scheduleData) {
+// Schedule record not found, redirect back to the schedule_list page
+header("Location: schedule_list.php");
+exit();
+}
 } else {
-    // If no schedule ID is provided, redirect back to the schedule_list page
-    header("Location: schedule_list.php");
-    exit();
+// If no schedule ID is provided, redirect back to the schedule_list page
+header("Location: schedule_list.php");
+exit();
 }
 ?>
 

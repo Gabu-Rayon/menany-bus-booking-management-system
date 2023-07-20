@@ -1,5 +1,10 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Fetch data from the unpaid_tickets table
@@ -11,18 +16,18 @@ $pendingTicketsData = $pendingTicketsStmt->fetchAll(PDO::FETCH_ASSOC);
 // Function to get customer's first and last name by customer ID
 function getCustomerName($customerId)
 {
-    global $conn;
-    $query = "SELECT firstname, lastname FROM tbl_users WHERE id = :customerId";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+global $conn;
+$query = "SELECT firstname, lastname FROM tbl_users WHERE id = :customerId";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+$stmt->execute();
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($userData) {
-        return $userData['firstname'] . ' ' . $userData['lastname'];
-    } else {
-        return 'N/A';
-    }
+if ($userData) {
+return $userData['firstname'] . ' ' . $userData['lastname'];
+} else {
+return 'N/A';
+}
 }
 ?>
 

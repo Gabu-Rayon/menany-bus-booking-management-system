@@ -30,18 +30,8 @@
 
                      <div class="app-utilities col-auto">
 
-                         <div class="app-utility-item app-user-dropdown dropdown">
-                             <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                 role="button" aria-expanded="false"><img src="assets/images/user.png"
-                                     alt="user profile"></a>
-                             <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                                 <li><a class="dropdown-item" href="account.php">Account</a></li>
-                                 <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                                 <li>
-                                     <hr class="dropdown-divider">
-                                 </li>
-                                 <li><a class="dropdown-item" href="login.php">Log Out</a></li>
-                             </ul>
+                         <div class="app-utility-item ">
+                             <a href="logout.php" role="button" aria-expanded="false">LOGOUT</a>
                          </div>
                          <!--//app-user-dropdown-->
                      </div>
@@ -208,24 +198,6 @@
                          <!--//nav-link-->
                      </li>
                      <!--//nav-item-->
-
-                     <li class="nav-item">
-                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                         <a class="nav-link" href="help.php">
-                             <span class="nav-icon">
-                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-question-circle"
-                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                     <path fill-rule="evenodd"
-                                         d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                     <path
-                                         d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                                 </svg>
-                             </span>
-                             <span class="nav-link-text">Help</span>
-                         </a>
-                         <!--//nav-link-->
-                     </li>
-                     <!--//nav-item-->
                  </ul>
                  <!--//app-menu-->
              </nav>
@@ -235,8 +207,7 @@
                      <ul class="app-menu footer-menu list-unstyled">
                          <li class="nav-item">
                              <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                             <a class="nav-link"
-                                 href="https://themes.3rdwavemedia.com/bootstrap-templates/admin-dashboard/portal-free-bootstrap-admin-dashboard-template-for-developers/">
+                             <a class="nav-link" href="#">
                                  <span class="nav-icon">
                                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person"
                                          fill="currentColor" xmlns="http://www.w3.org/2000/svg">

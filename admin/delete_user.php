@@ -1,28 +1,33 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Check if the user ID is provided in the URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $userId = $_GET['id'];
+$userId = $_GET['id'];
 
-    // Delete the user record from the database
-    $deleteQuery = "DELETE FROM tbl_users WHERE id = :userId";
-    $stmt = $conn->prepare($deleteQuery);
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+// Delete the user record from the database
+$deleteQuery = "DELETE FROM tbl_users WHERE id = :userId";
+$stmt = $conn->prepare($deleteQuery);
+$stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-        // Redirect back to the registered users page after deletion
-        header("Location: registered_users.php");
-        exit();
-    } else {
-        // Handle the case where the deletion fails
-        echo "Failed to delete the user record.";
-    }
+if ($stmt->execute()) {
+// Redirect back to the registered users page after deletion
+header("Location: registered_users.php");
+exit();
 } else {
-    // If no user ID is provided in the URL, redirect back to the registered users page
-    header("Location: registered_users.php");
-    exit();
+// Handle the case where the deletion fails
+echo "Failed to delete the user record.";
+}
+} else {
+// If no user ID is provided in the URL, redirect back to the registered users page
+header("Location: registered_users.php");
+exit();
 }
 ?>
 

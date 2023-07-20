@@ -1,48 +1,53 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Process the form data after submission
 if (isset($_POST['update'])) {
-    $userId = $_POST['user_id'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $email = $_POST['email'];
+$userId = $_POST['user_id'];
+$firstname = $_POST['firstname'];
+$lastname = $_POST['lastname'];
+$email = $_POST['email'];
 
-    // Update the user record in the database
-    $updateQuery = "UPDATE tbl_users SET firstname = :firstname, lastname = :lastname, email = :email WHERE id = :userId";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-    $stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $stmt->execute();
+// Update the user record in the database
+$updateQuery = "UPDATE tbl_users SET firstname = :firstname, lastname = :lastname, email = :email WHERE id = :userId";
+$stmt = $conn->prepare($updateQuery);
+$stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+$stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
+$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+$stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+$stmt->execute();
 
-    // Redirect back to the registered users page after updating
-    header("Location: registered_users.php");
-    exit();
+// Redirect back to the registered users page after updating
+header("Location: registered_users.php");
+exit();
 }
 
 // Retrieve the user record to edit
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $userId = $_GET['id'];
+$userId = $_GET['id'];
 
-    // Fetch user record based on the ID
-    $selectQuery = "SELECT * FROM tbl_users WHERE id = :userId";
-    $stmt = $conn->prepare($selectQuery);
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $stmt->execute();
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch user record based on the ID
+$selectQuery = "SELECT * FROM tbl_users WHERE id = :userId";
+$stmt = $conn->prepare($selectQuery);
+$stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+$stmt->execute();
+$userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$userData) {
-        // User record not found, redirect back to the registered users page
-        header("Location: registered_users.php");
-        exit();
-    }
+if (!$userData) {
+// User record not found, redirect back to the registered users page
+header("Location: registered_users.php");
+exit();
+}
 } else {
-    // If no user ID is provided, redirect back to the registered users page
-    header("Location: registered_users.php");
-    exit();
+// If no user ID is provided, redirect back to the registered users page
+header("Location: registered_users.php");
+exit();
 }
 ?>
 

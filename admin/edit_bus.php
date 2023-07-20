@@ -1,52 +1,58 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
+
 require_once("db-connect/config.php");
 
 // Process the form data after submission
 if (isset($_POST['update'])) {
-    $busId = $_POST['id'];
-    $name = $_POST['name'];
-    $busNumber = $_POST['bus_number'];
-    $status = $_POST['status'];
+$busId = $_POST['id'];
+$name = $_POST['name'];
+$busNumber = $_POST['bus_number'];
+$status = $_POST['status'];
 
-    // Update the bus record in the database
-    $updateQuery = "UPDATE bus SET name = :name, bus_number = :busNumber, status = :status WHERE id = :busId";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-    $stmt->bindParam(':busNumber', $busNumber, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
+// Update the bus record in the database
+$updateQuery = "UPDATE bus SET name = :name, bus_number = :busNumber, status = :status WHERE id = :busId";
+$stmt = $conn->prepare($updateQuery);
+$stmt->bindParam(':name', $name, PDO::PARAM_STR);
+$stmt->bindParam(':busNumber', $busNumber, PDO::PARAM_STR);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+$stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-        // Redirect back to the bus table page after updating
-        header("Location: buses.php");
-        exit();
-    } else {
-        // Handle the case where the update fails
-        echo "Failed to update the bus record.";
-    }
+if ($stmt->execute()) {
+// Redirect back to the bus table page after updating
+header("Location: buses.php");
+exit();
+} else {
+// Handle the case where the update fails
+echo "Failed to update the bus record.";
+}
 }
 
 // Retrieve the bus record to edit
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $busId = $_GET['id'];
+$busId = $_GET['id'];
 
-    // Fetch bus record based on the ID
-    $selectQuery = "SELECT * FROM bus WHERE id = :busId";
-    $stmt = $conn->prepare($selectQuery);
-    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
-    $stmt->execute();
-    $busData = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch bus record based on the ID
+$selectQuery = "SELECT * FROM bus WHERE id = :busId";
+$stmt = $conn->prepare($selectQuery);
+$stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
+$stmt->execute();
+$busData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$busData) {
-        // Bus record not found, redirect back to the bus table page
-        header("Location: buses.php");
-        exit();
-    }
+if (!$busData) {
+// Bus record not found, redirect back to the bus table page
+header("Location: buses.php");
+exit();
+}
 } else {
-    // If no bus ID is provided, redirect back to the bus table page
-    header("Location: buses.php");
-    exit();
+// If no bus ID is provided, redirect back to the bus table page
+header("Location: buses.php");
+exit();
 }
 ?>
 

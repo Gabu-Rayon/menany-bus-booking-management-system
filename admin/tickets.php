@@ -24,6 +24,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script defer src="assets/js/dataTables.js">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </header>
 
@@ -51,6 +52,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <th>Customer Name</th>
                                 <th>Amount Paid</th>
                                 <th>Payment Details</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,6 +82,10 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         }
                                         ?>
                                 </td>
+                                <td>
+                                    <a href="print_receipt.php?id=<?php echo $row['id']; ?>" target="_blank"
+                                        class="btn btn-primary">Print Receipt</a>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -92,6 +98,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <th>Customer Name</th>
                                     <th>Amount Paid</th>
                                     <th>Payment Details</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </tfoot>
@@ -114,7 +121,65 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Page Specific JS -->
     <script src="assets/js/app.js"></script>
+    <script>
+    // Function to generate and download PDF receipt
+    function generatePDF(ticketId) {
+        const ticketRow = document.querySelector(`tr[data-ticket-id="${ticketId}"]`);
+        const referenceNo = ticketRow.querySelector('.reference-no').innerText;
+        const customerName = ticketRow.querySelector('.customer-name').innerText;
+        const amountPaid = ticketRow.querySelector('.amount-paid').innerText;
+        const paymentMethod = ticketRow.querySelector('.payment-method').innerText;
+        const howMany = ticketRow.querySelector('.how-many').innerText;
+        const toDestination = ticketRow.querySelector('.to-destination').innerText;
+        const departure = ticketRow.querySelector('.departure').innerText;
 
+        const receiptContent = `
+            <h1>Ticket Receipt</h1>
+            <p><b>Reference No:</b> ${referenceNo}</p>
+            <p><b>Customer Name:</b> ${customerName}</p>
+            <p><b>Amount Paid:</b> ${amountPaid}</p>
+            <p><b>Payment Method:</b> ${paymentMethod}</p>
+            <p><b>How Many:</b> ${howMany}</p>
+            <p><b>To Destination:</b> ${toDestination}</p>
+            <p><b>Departure:</b> ${departure}</p>
+        `;
+
+        const element = document.createElement('div');
+        element.innerHTML = receiptContent;
+
+        const opt = {
+            margin: [10, 10],
+            filename: `ticket_receipt_${referenceNo}.pdf`,
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        };
+
+        // Generate and download the PDF
+        html2pdf()
+            .from(element)
+            .set(opt)
+            .save();
+    }
+
+    // Add event listener to "Print" buttons
+    const printButtons = document.querySelectorAll('.btn-print');
+    printButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const ticketId = event.target.getAttribute('data-ticket-id');
+            generatePDF(ticketId);
+        });
+    });
+    </script>
 </body>
 
 </html>

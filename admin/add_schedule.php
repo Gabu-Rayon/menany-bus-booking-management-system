@@ -1,5 +1,11 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
+
 require_once("db-connect/config.php");
 
 // Fetch data from the bus table for populating the bus dropdown menu
@@ -22,32 +28,33 @@ $toLocations = $toLocationStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Process the form data after submission
 if (isset($_POST['add_schedule'])) {
-    $busId = $_POST['bus_id'];
-    $fromLocation = $_POST['from_location'];
-    $toLocation = $_POST['to_location'];
-    $departureTime = $_POST['departure_time'];
-    $eta = $_POST['eta'];
-    $status = $_POST['status'];
-    $availability = $_POST['availability'];
-    $price = $_POST['price'];
+$busId = $_POST['bus_id'];
+$fromLocation = $_POST['from_location'];
+$toLocation = $_POST['to_location'];
+$departureTime = $_POST['departure_time'];
+$eta = $_POST['eta'];
+$status = $_POST['status'];
+$availability = $_POST['availability'];
+$price = $_POST['price'];
 
-    // Insert the new schedule record into the schedule_list table
-    $insertQuery = "INSERT INTO schedule_list (bus_id, from_location, to_location, departure_time, eta, status, availability, price) 
-                    VALUES (:busId, :fromLocation, :toLocation, :departureTime, :eta, :status, :availability, :price)";
-    $stmt = $conn->prepare($insertQuery);
-    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
-    $stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
-    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
-    $stmt->bindParam(':price', $price, PDO::PARAM_STR);
-    $stmt->execute();
+// Insert the new schedule record into the schedule_list table
+$insertQuery = "INSERT INTO schedule_list (bus_id, from_location, to_location, departure_time, eta, status,
+availability, price)
+VALUES (:busId, :fromLocation, :toLocation, :departureTime, :eta, :status, :availability, :price)";
+$stmt = $conn->prepare($insertQuery);
+$stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
+$stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
+$stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
+$stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
+$stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+$stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
+$stmt->bindParam(':price', $price, PDO::PARAM_STR);
+$stmt->execute();
 
-    // Redirect back to the schedule_list page after adding the schedule
-    header("Location: schedule_list.php");
-    exit();
+// Redirect back to the schedule_list page after adding the schedule
+header("Location: schedule_list.php");
+exit();
 }
 ?>
 

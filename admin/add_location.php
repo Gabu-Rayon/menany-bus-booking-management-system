@@ -1,30 +1,37 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
+
 require_once("db-connect/config.php");
 
 // Process the form data after submission
 if (isset($_POST['add'])) {
-    $terminalName = $_POST['terminal_name'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $status = $_POST['status'];
+$terminalName = $_POST['terminal_name'];
+$city = $_POST['city'];
+$state = $_POST['state'];
+$status = $_POST['status'];
 
-    // Insert the new location record into the database
-    $insertQuery = "INSERT INTO location (terminal_name, city, state, status) VALUES (:terminalName, :city, :state, :status)";
-    $stmt = $conn->prepare($insertQuery);
-    $stmt->bindParam(':terminalName', $terminalName, PDO::PARAM_STR);
-    $stmt->bindParam(':city', $city, PDO::PARAM_STR);
-    $stmt->bindParam(':state', $state, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+// Insert the new location record into the database
+$insertQuery = "INSERT INTO location (terminal_name, city, state, status) VALUES (:terminalName, :city, :state,
+:status)";
+$stmt = $conn->prepare($insertQuery);
+$stmt->bindParam(':terminalName', $terminalName, PDO::PARAM_STR);
+$stmt->bindParam(':city', $city, PDO::PARAM_STR);
+$stmt->bindParam(':state', $state, PDO::PARAM_STR);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-        // Redirect back to the locations page after successful addition
-        header("Location: location.php");
-        exit();
-    } else {
-        // Handle the case where insertion fails
-        echo "Failed to add the location.";
-    }
+if ($stmt->execute()) {
+// Redirect back to the locations page after successful addition
+header("Location: location.php");
+exit();
+} else {
+// Handle the case where insertion fails
+echo "Failed to add the location.";
+}
 }
 ?>
 

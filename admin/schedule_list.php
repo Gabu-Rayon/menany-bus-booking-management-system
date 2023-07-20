@@ -1,13 +1,19 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Fetch data from schedule_list table with related information from bus and location tables
-$selectQuery = "SELECT sl.id, b.name AS bus_name, b.bus_number, l1.city AS from_location, l2.city AS to_location, sl.departure_time, sl.eta, sl.status, sl.availability, sl.price 
-                FROM schedule_list sl
-                JOIN bus b ON sl.bus_id = b.id
-                JOIN location l1 ON sl.from_location = l1.id
-                JOIN location l2 ON sl.to_location = l2.id";
+$selectQuery = "SELECT sl.id, b.name AS bus_name, b.bus_number, l1.city AS from_location, l2.city AS to_location,
+sl.departure_time, sl.eta, sl.status, sl.availability, sl.price
+FROM schedule_list sl
+JOIN bus b ON sl.bus_id = b.id
+JOIN location l1 ON sl.from_location = l1.id
+JOIN location l2 ON sl.to_location = l2.id";
 $stmt = $conn->prepare($selectQuery);
 $stmt->execute();
 $scheduleList = $stmt->fetchAll(PDO::FETCH_ASSOC);

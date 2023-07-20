@@ -1,28 +1,34 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
+
 require_once("db-connect/config.php");
 
 // Check if the location ID is provided in the URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $locationId = $_GET['id'];
+$locationId = $_GET['id'];
 
-    // Delete the location record from the database
-    $deleteQuery = "DELETE FROM location WHERE id = :locationId";
-    $stmt = $conn->prepare($deleteQuery);
-    $stmt->bindParam(':locationId', $locationId, PDO::PARAM_INT);
+// Delete the location record from the database
+$deleteQuery = "DELETE FROM location WHERE id = :locationId";
+$stmt = $conn->prepare($deleteQuery);
+$stmt->bindParam(':locationId', $locationId, PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-        // Redirect back to the locations page after deletion
-        header("Location: location.php");
-        exit();
-    } else {
-        // Handle the case where the deletion fails
-        echo "Failed to delete the location record.";
-    }
+if ($stmt->execute()) {
+// Redirect back to the locations page after deletion
+header("Location: location.php");
+exit();
 } else {
-    // If no location ID is provided in the URL, redirect back to the locations page
-    header("Location: location.php");
-    exit();
+// Handle the case where the deletion fails
+echo "Failed to delete the location record.";
+}
+} else {
+// If no location ID is provided in the URL, redirect back to the locations page
+header("Location: location.php");
+exit();
 }
 ?>
 

@@ -1,50 +1,56 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
 require_once("db-connect/config.php");
 
 // Check if the location ID is provided in the URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $locationId = $_GET['id'];
+$locationId = $_GET['id'];
 
-    // Fetch location record based on the ID
-    $selectQuery = "SELECT * FROM location WHERE id = :locationId";
-    $stmt = $conn->prepare($selectQuery);
-    $stmt->bindParam(':locationId', $locationId, PDO::PARAM_INT);
-    $stmt->execute();
-    $locationData = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch location record based on the ID
+$selectQuery = "SELECT * FROM location WHERE id = :locationId";
+$stmt = $conn->prepare($selectQuery);
+$stmt->bindParam(':locationId', $locationId, PDO::PARAM_INT);
+$stmt->execute();
+$locationData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$locationData) {
-        // Location record not found, redirect back to the locations page
-        header("Location: location.php");
-        exit();
-    }
+if (!$locationData) {
+// Location record not found, redirect back to the locations page
+header("Location: location.php");
+exit();
+}
 } else {
-    // If no location ID is provided, redirect back to the locations page
-    header("Location: location.php");
-    exit();
+// If no location ID is provided, redirect back to the locations page
+header("Location: location.php");
+exit();
 }
 
 // Process the form data after submission
 if (isset($_POST['update'])) {
-    $locationId = $_POST['id'];
-    $terminalName = $_POST['terminal_name'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $status = $_POST['status'];
+$locationId = $_POST['id'];
+$terminalName = $_POST['terminal_name'];
+$city = $_POST['city'];
+$state = $_POST['state'];
+$status = $_POST['status'];
 
-    // Update the location record in the database
-    $updateQuery = "UPDATE location SET terminal_name = :terminalName, city = :city, state = :state, status = :status WHERE id = :locationId";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bindParam(':terminalName', $terminalName, PDO::PARAM_STR);
-    $stmt->bindParam(':city', $city, PDO::PARAM_STR);
-    $stmt->bindParam(':state', $state, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt->bindParam(':locationId', $locationId, PDO::PARAM_INT);
-    $stmt->execute();
+// Update the location record in the database
+$updateQuery = "UPDATE location SET terminal_name = :terminalName, city = :city, state = :state, status = :status WHERE
+id = :locationId";
+$stmt = $conn->prepare($updateQuery);
+$stmt->bindParam(':terminalName', $terminalName, PDO::PARAM_STR);
+$stmt->bindParam(':city', $city, PDO::PARAM_STR);
+$stmt->bindParam(':state', $state, PDO::PARAM_STR);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
+$stmt->bindParam(':locationId', $locationId, PDO::PARAM_INT);
+$stmt->execute();
 
-    // Redirect back to the locations page after updating
-    header("Location: location.php");
-    exit();
+// Redirect back to the locations page after updating
+header("Location: location.php");
+exit();
 }
 ?>
 

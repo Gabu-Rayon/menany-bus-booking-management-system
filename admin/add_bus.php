@@ -1,28 +1,34 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
+
 require_once("db-connect/config.php");
 
 // Process the form data after submission
 if (isset($_POST['add'])) {
-    $name = $_POST['name'];
-    $busNumber = $_POST['bus_number'];
-    $status = $_POST['status'];
+$name = $_POST['name'];
+$busNumber = $_POST['bus_number'];
+$status = $_POST['status'];
 
-    // Insert the new bus record into the database
-    $insertQuery = "INSERT INTO bus (name, bus_number, status) VALUES (:name, :busNumber, :status)";
-    $stmt = $conn->prepare($insertQuery);
-    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-    $stmt->bindParam(':busNumber', $busNumber, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+// Insert the new bus record into the database
+$insertQuery = "INSERT INTO bus (name, bus_number, status) VALUES (:name, :busNumber, :status)";
+$stmt = $conn->prepare($insertQuery);
+$stmt->bindParam(':name', $name, PDO::PARAM_STR);
+$stmt->bindParam(':busNumber', $busNumber, PDO::PARAM_STR);
+$stmt->bindParam(':status', $status, PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-        // Redirect back to the bus table page after adding the new bus
-        header("Location: buses.php");
-        exit();
-    } else {
-        // Handle the case where the insertion fails
-        echo "Failed to add the new bus record.";
-    }
+if ($stmt->execute()) {
+// Redirect back to the bus table page after adding the new bus
+header("Location: buses.php");
+exit();
+} else {
+// Handle the case where the insertion fails
+echo "Failed to add the new bus record.";
+}
 }
 ?>
 

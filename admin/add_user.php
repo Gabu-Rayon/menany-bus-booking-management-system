@@ -1,41 +1,48 @@
 <?php
+session_start();
+if(empty($_SESSION['id'])){
+   header('location: login.php');    
+}
 include("inc/header.php");
+
+
 require_once("db-connect/config.php");
 
 // Process the form data after submission
 if (isset($_POST['add'])) {
-    // Retrieve form data
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirm_password'];
+// Retrieve form data
+$firstname = $_POST['firstname'];
+$lastname = $_POST['lastname'];
+$email = $_POST['email'];
+$password = $_POST['password'];
+$confirmPassword = $_POST['confirm_password'];
 
-    // Validate password and confirm password fields
-    if ($password !== $confirmPassword) {
-        // Passwords don't match, display an error message
-        $error_message = "Passwords do not match.";
-    } else {
-        // Hash the password using password_hash() function
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+// Validate password and confirm password fields
+if ($password !== $confirmPassword) {
+// Passwords don't match, display an error message
+$error_message = "Passwords do not match.";
+} else {
+// Hash the password using password_hash() function
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Insert the new user record into the database
-        $insertQuery = "INSERT INTO tbl_users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)";
-        $stmt = $conn->prepare($insertQuery);
-        $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
-        $stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+// Insert the new user record into the database
+$insertQuery = "INSERT INTO tbl_users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email,
+:password)";
+$stmt = $conn->prepare($insertQuery);
+$stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+$stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
+$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+$stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
 
-        if ($stmt->execute()) {
-            // Redirect back to the registered users page after adding
-            header("Location: registered_users.php");
-            exit();
-        } else {
-            // Handle the case where insertion fails
-            echo "Failed to add the new user.";
-        }
-    }
+if ($stmt->execute()) {
+// Redirect back to the registered users page after adding
+header("Location: registered_users.php");
+exit();
+} else {
+// Handle the case where insertion fails
+echo "Failed to add the new user.";
+}
+}
 }
 ?>
 
