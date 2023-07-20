@@ -2,7 +2,58 @@
 include("inc/header.php");
 require_once("db-connect/config.php");
 
-// Check if the schedule ID is provided in the URL
+// Fetch data from the bus table for populating the bus dropdown menu
+$busQuery = "SELECT id, name, bus_number FROM bus";
+$busStmt = $conn->prepare($busQuery);
+$busStmt->execute();
+$buses = $busStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch data from the location table for populating the from location dropdown menu
+$fromLocationQuery = "SELECT id, city FROM location";
+$fromLocationStmt = $conn->prepare($fromLocationQuery);
+$fromLocationStmt->execute();
+$fromLocations = $fromLocationStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch data from the location table for populating the to location dropdown menu
+$toLocationQuery = "SELECT id, city FROM location";
+$toLocationStmt = $conn->prepare($toLocationQuery);
+$toLocationStmt->execute();
+$toLocations = $toLocationStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Process the form data after submission
+if (isset($_POST['update_schedule'])) {
+    $scheduleId = $_POST['schedule_id'];
+    $busId = $_POST['bus_id'];
+    $fromLocation = $_POST['from_location'];
+    $toLocation = $_POST['to_location'];
+    $departureTime = $_POST['departure_time'];
+    $eta = $_POST['eta'];
+    $status = $_POST['status'];
+    $availability = $_POST['availability'];
+    $price = $_POST['price'];
+
+    // Update the schedule record in the schedule_list table
+    $updateQuery = "UPDATE schedule_list SET bus_id = :busId, from_location = :fromLocation, to_location = :toLocation, 
+                    departure_time = :departureTime, eta = :eta, status = :status, availability = :availability, price = :price 
+                    WHERE id = :scheduleId";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
+    $stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
+    $stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
+    $stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
+    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
+    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
+    $stmt->bindParam(':price', $price, PDO::PARAM_STR);
+    $stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Redirect back to the schedule_list page after updating the schedule
+    header("Location: schedule_list.php");
+    exit();
+}
+
+// Retrieve the schedule record to edit
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $scheduleId = $_GET['id'];
 
@@ -14,44 +65,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $scheduleData = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$scheduleData) {
-        // Schedule record not found, redirect back to the schedule list page
+        // Schedule record not found, redirect back to the schedule_list page
         header("Location: schedule_list.php");
         exit();
     }
 } else {
-    // If no schedule ID is provided, redirect back to the schedule list page
-    header("Location: schedule_list.php");
-    exit();
-}
-
-// Process the form data after submission
-if (isset($_POST['update'])) {
-    $busId = $_POST['bus_id'];
-    $fromLocation = $_POST['from_location'];
-    $toLocation = $_POST['to_location'];
-    $departureTime = $_POST['departure_time'];
-    $eta = $_POST['eta'];
-    $status = $_POST['status'];
-    $availability = $_POST['availability'];
-    $price = $_POST['price'];
-
-    // Update the schedule record in the database
-    $updateQuery = "UPDATE schedule_list SET bus_id = :busId, from_location = :fromLocation, to_location = :toLocation,
-                    departure_time = :departureTime, eta = :eta, status = :status, availability = :availability,
-                    price = :price WHERE id = :scheduleId";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
-    $stmt->bindParam(':fromLocation', $fromLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':toLocation', $toLocation, PDO::PARAM_INT);
-    $stmt->bindParam(':departureTime', $departureTime, PDO::PARAM_STR);
-    $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
-    $stmt->bindParam(':price', $price, PDO::PARAM_INT);
-    $stmt->bindParam(':scheduleId', $scheduleId, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Redirect back to the schedule list page after updating
+    // If no schedule ID is provided, redirect back to the schedule_list page
     header("Location: schedule_list.php");
     exit();
 }
@@ -73,63 +92,74 @@ if (isset($_POST['update'])) {
                 <!--//row-->
 
                 <div class="row g-4">
-                    <h2>Edit Schedule</h2>
-
                     <form action="#" method="POST">
-                        <div class="name mb-3">
-                            <label class="sr-only" for="bus_id">Bus ID:</label>
-                            <input id="bus_id" name="bus_id" type="text" class="form-control"
-                                value="<?php echo $scheduleData['bus_id']; ?>" required>
+                        <input type="hidden" name="schedule_id" value="<?php echo $scheduleData['id']; ?>">
+                        <div class="mb-3">
+                            <label class="form-label" for="bus_id">Select Bus:</label>
+                            <select class="form-select" name="bus_id" id="bus_id" required>
+                                <?php foreach ($buses as $bus) : ?>
+                                <option value="<?php echo $bus['id']; ?>"
+                                    <?php if ($bus['id'] == $scheduleData['bus_id']) echo 'selected'; ?>>
+                                    <?php echo $bus['name'] . ' (' . $bus['bus_number'] . ')'; ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <!--//form-group-->
-                        <div class="from_location mb-3">
-                            <label class="sr-only" for="from_location">From Location:</label>
-                            <input id="from_location" name="from_location" type="text" class="form-control"
-                                value="<?php echo $scheduleData['from_location']; ?>" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="from_location">From Location:</label>
+                            <select class="form-select" name="from_location" id="from_location" required>
+                                <?php foreach ($fromLocations as $location) : ?>
+                                <option value="<?php echo $location['id']; ?>"
+                                    <?php if ($location['id'] == $scheduleData['from_location']) echo 'selected'; ?>>
+                                    <?php echo $location['city']; ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <!--//form-group-->
-                        <div class="to_location mb-3">
-                            <label class="sr-only" for="to_location">To Location:</label>
-                            <input id="to_location" name="to_location" type="text" class="form-control"
-                                value="<?php echo $scheduleData['to_location']; ?>" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="to_location">To Location:</label>
+                            <select class="form-select" name="to_location" id="to_location" required>
+                                <?php foreach ($toLocations as $location) : ?>
+                                <option value="<?php echo $location['id']; ?>"
+                                    <?php if ($location['id'] == $scheduleData['to_location']) echo 'selected'; ?>>
+                                    <?php echo $location['city']; ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <!--//form-group-->
-                        <div class="departure_time mb-3">
-                            <label class="sr-only" for="departure_time">Departure Time:</label>
-                            <input id="departure_time" name="departure_time" type="text" class="form-control"
-                                value="<?php echo $scheduleData['departure_time']; ?>" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="departure_time">Departure Time:
+                                <?php echo $scheduleData['departure_time']; ?></label>
+
+                            <input type="date" class="form-control" name="departure_time" id="departure_time" required>
                         </div>
-                        <!--//form-group-->
-                        <div class="eta mb-3">
-                            <label class="sr-only" for="eta">ETA:</label>
-                            <input id="eta" name="eta" type="text" class="form-control"
-                                value="<?php echo $scheduleData['eta']; ?>" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="eta">Estimated Time of Arrival (ETA):
+                                <?php echo $scheduleData['eta']; ?></label>
+
+                            <input type="date" class="form-control" name="eta" id="eta" required>
                         </div>
-                        <!--//form-group-->
-                        <div class="status mb-3">
-                            <label class="sr-only" for="status">Status:</label>
-                            <select name="status" class="form-select" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="status">Status:</label>
+                            <select class="form-select" name="status" id="status" required>
                                 <option value="0" <?php if ($scheduleData['status'] == 0) echo 'selected'; ?>>Inactive
                                 </option>
                                 <option value="1" <?php if ($scheduleData['status'] == 1) echo 'selected'; ?>>Active
                                 </option>
                             </select>
                         </div>
-                        <!--//form-group-->
-                        <div class="availability mb-3">
-                            <label class="sr-only" for="availability">Availability:</label>
-                            <input id="availability" name="availability" type="text" class="form-control"
+                        <div class="mb-3">
+                            <label class="form-label" for="availability">Available Seats:</label>
+                            <input type="number" class="form-control" name="availability" id="availability"
                                 value="<?php echo $scheduleData['availability']; ?>" required>
                         </div>
-                        <!--//form-group-->
-                        <div class="price mb-3">
-                            <label class="sr-only" for="price">Price:</label>
-                            <input id="price" name="price" type="text" class="form-control"
+                        <div class="mb-3">
+                            <label class="form-label" for="price">Price <i>Ksh</i>: </label>
+                            <input type="number" class="form-control" name="price" id="price"
                                 value="<?php echo $scheduleData['price']; ?>" required>
                         </div>
-                        <!--//form-group-->
                         <div class="text-center">
-                            <input id="submit" name="update" type="submit" class="btn btn-primary" value="Update">
+                            <input type="submit" class="btn btn-primary" name="update_schedule" value="Update Schedule">
                         </div>
                     </form>
                 </div>
@@ -137,14 +167,12 @@ if (isset($_POST['update'])) {
             <!--//container-fluid-->
         </div>
         <!--//app-content-->
-
     </div>
     <!--//app-wrapper-->
 
     <!-- Javascript -->
-    <script src="assets/plugins/bootstrap/ppopper.min.js"></script>
+    <script src="assets/plugins/bootstrap/popper.min.js"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-
     <!-- Page Specific JS -->
     <script src="assets/js/app.js"></script>
 </body>

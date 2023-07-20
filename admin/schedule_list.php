@@ -2,16 +2,15 @@
 include("inc/header.php");
 require_once("db-connect/config.php");
 
-// Fetch all schedules from the schedule_list table
-$selectQuery = "SELECT s.id, s.from_location, s.to_location, s.departure_time, s.eta, s.status, 
-                s.availability, s.price, b.name as bus_name 
-                FROM schedule_list s 
-                INNER JOIN bus b ON s.bus_id = b.id
-                INNER JOIN location l1 ON s.from_location = l1.id
-                INNER JOIN location l2 ON s.to_location = l2.id";
+// Fetch data from schedule_list table with related information from bus and location tables
+$selectQuery = "SELECT sl.id, b.name AS bus_name, b.bus_number, l1.city AS from_location, l2.city AS to_location, sl.departure_time, sl.eta, sl.status, sl.availability, sl.price 
+                FROM schedule_list sl
+                JOIN bus b ON sl.bus_id = b.id
+                JOIN location l1 ON sl.from_location = l1.id
+                JOIN location l2 ON sl.to_location = l2.id";
 $stmt = $conn->prepare($selectQuery);
 $stmt->execute();
-$schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$scheduleList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <header>
@@ -49,51 +48,56 @@ $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <table id="example" class="table table-striped" style="width:100%">
                         <thead>
                             <tr>
-                            <tr>
-                                <th>From Location</th>
-                                <th>To Location</th>
-                                <th>Departure Time</th>
-                                <th>ETA</th>
-                                <th>Status</th>
-                                <th>Availability</th>
-                                <th>Price</th>
-                                <th>Bus</th>
-                                <th>Action</th>
-                            </tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Bus Name</th>
+                                <th scope="col">Bus Number</th>
+                                <th scope="col">From Location</th>
+                                <th scope="col">To Location</th>
+                                <th scope="col">Departure Time</th>
+                                <th scope="col">ETA</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Available Seats</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($schedules as $schedule) : ?>
+                            <?php foreach ($scheduleList as $schedule) : ?>
                             <tr>
+                                <th scope="row"><?php echo $schedule['id']; ?></th>
+                                <td><?php echo $schedule['bus_name']; ?></td>
+                                <td><?php echo $schedule['bus_number']; ?></td>
                                 <td><?php echo $schedule['from_location']; ?></td>
                                 <td><?php echo $schedule['to_location']; ?></td>
                                 <td><?php echo $schedule['departure_time']; ?></td>
                                 <td><?php echo $schedule['eta']; ?></td>
-                                <td><?php echo ($schedule['status'] == 1) ? 'Active' : 'Inactive'; ?></td>
+                                <td><?php echo $schedule['status'] == 1 ? 'Active' : 'Inactive'; ?></td>
                                 <td><?php echo $schedule['availability']; ?></td>
-                                <td><?php echo $schedule['price']; ?></td>
-                                <td><?php echo $schedule['bus_name']; ?></td>
+                                <td>Ksh <?php echo $schedule['price']; ?></td>
                                 <td>
                                     <a href="edit_schedule.php?id=<?php echo $schedule['id']; ?>"
-                                        class="btn btn-primary btn-sm">Edit</a>
+                                        class="btn btn-sm btn-primary">Edit</a>
                                     <a href="delete_schedule.php?id=<?php echo $schedule['id']; ?>"
-                                        class="btn btn-danger btn-sm"
+                                        class="btn btn-sm btn-danger"
                                         onclick="return confirm('Are you sure you want to delete this schedule?')">Delete</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
+
                         <tfoot>
                             <tr>
-                                <th>From Location</th>
-                                <th>To Location</th>
-                                <th>Departure Time</th>
-                                <th>ETA</th>
-                                <th>Status</th>
-                                <th>Availability</th>
-                                <th>Price</th>
-                                <th>Bus</th>
-                                <th>Action</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Bus Name</th>
+                                <th scope="col">Bus Number</th>
+                                <th scope="col">From Location</th>
+                                <th scope="col">To Location</th>
+                                <th scope="col">Departure Time</th>
+                                <th scope="col">ETA</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Available Seats</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </tfoot>
                     </table>

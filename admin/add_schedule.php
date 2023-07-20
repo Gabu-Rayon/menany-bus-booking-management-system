@@ -2,8 +2,26 @@
 include("inc/header.php");
 require_once("db-connect/config.php");
 
+// Fetch data from the bus table for populating the bus dropdown menu
+$busQuery = "SELECT id, name, bus_number FROM bus";
+$busStmt = $conn->prepare($busQuery);
+$busStmt->execute();
+$buses = $busStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch data from the location table for populating the from location dropdown menu
+$fromLocationQuery = "SELECT id, city FROM location";
+$fromLocationStmt = $conn->prepare($fromLocationQuery);
+$fromLocationStmt->execute();
+$fromLocations = $fromLocationStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch data from the location table for populating the to location dropdown menu
+$toLocationQuery = "SELECT id, city FROM location";
+$toLocationStmt = $conn->prepare($toLocationQuery);
+$toLocationStmt->execute();
+$toLocations = $toLocationStmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Process the form data after submission
-if (isset($_POST['add'])) {
+if (isset($_POST['add_schedule'])) {
     $busId = $_POST['bus_id'];
     $fromLocation = $_POST['from_location'];
     $toLocation = $_POST['to_location'];
@@ -13,8 +31,8 @@ if (isset($_POST['add'])) {
     $availability = $_POST['availability'];
     $price = $_POST['price'];
 
-    // Insert the new schedule record into the database
-    $insertQuery = "INSERT INTO schedule_list (bus_id, from_location, to_location, departure_time, eta, status, availability, price)
+    // Insert the new schedule record into the schedule_list table
+    $insertQuery = "INSERT INTO schedule_list (bus_id, from_location, to_location, departure_time, eta, status, availability, price) 
                     VALUES (:busId, :fromLocation, :toLocation, :departureTime, :eta, :status, :availability, :price)";
     $stmt = $conn->prepare($insertQuery);
     $stmt->bindParam(':busId', $busId, PDO::PARAM_INT);
@@ -24,16 +42,12 @@ if (isset($_POST['add'])) {
     $stmt->bindParam(':eta', $eta, PDO::PARAM_STR);
     $stmt->bindParam(':status', $status, PDO::PARAM_INT);
     $stmt->bindParam(':availability', $availability, PDO::PARAM_INT);
-    $stmt->bindParam(':price', $price, PDO::PARAM_INT);
+    $stmt->bindParam(':price', $price, PDO::PARAM_STR);
+    $stmt->execute();
 
-    if ($stmt->execute()) {
-        // Redirect back to the schedule list page after adding the new schedule
-        header("Location: schedule_list.php");
-        exit();
-    } else {
-        // Handle the case where the insertion fails
-        echo "Failed to add the new schedule.";
-    }
+    // Redirect back to the schedule_list page after adding the schedule
+    header("Location: schedule_list.php");
+    exit();
 }
 ?>
 
@@ -53,54 +67,60 @@ if (isset($_POST['add'])) {
                 <!--//row-->
 
                 <div class="row g-4">
-                    <h2>Add Schedule</h2>
-
                     <form action="#" method="POST">
-                        <div class="name mb-3">
-                            <label class="sr-only" for="bus_id">Bus ID:</label>
-                            <input id="bus_id" name="bus_id" type="text" class="form-control" required>
-                        </div>
-                        <!--//form-group-->
-                        <div class="from_location mb-3">
-                            <label class="sr-only" for="from_location">From Location:</label>
-                            <input id="from_location" name="from_location" type="text" class="form-control" required>
-                        </div>
-                        <!--//form-group-->
-                        <div class="to_location mb-3">
-                            <label class="sr-only" for="to_location">To Location:</label>
-                            <input id="to_location" name="to_location" type="text" class="form-control" required>
-                        </div>
-                        <!--//form-group-->
-                        <div class="departure_time mb-3">
-                            <label class="sr-only" for="departure_time">Departure Time:</label>
-                            <input id="departure_time" name="departure_time" type="text" class="form-control" required>
-                        </div>
-                        <!--//form-group-->
-                        <div class="eta mb-3">
-                            <label class="sr-only" for="eta">ETA:</label>
-                            <input id="eta" name="eta" type="text" class="form-control" required>
-                        </div>
-                        <!--//form-group-->
-                        <div class="status mb-3">
-                            <label class="sr-only" for="status">Status:</label>
-                            <select name="status" class="form-select" required>
-                                <option value="0">Inactive</option>
-                                <option value="1">Active</option>
+                        <div class="mb-3">
+                            <label class="form-label" for="bus_id">Select Bus:</label>
+                            <select class="form-select" name="bus_id" id="bus_id" required>
+                                <option value="" selected disabled>Select a bus</option>
+                                <?php foreach ($buses as $bus) : ?>
+                                <option value="<?php echo $bus['id']; ?>">
+                                    <?php echo $bus['name'] . ' (' . $bus['bus_number'] . ')'; ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
-                        <!--//form-group-->
-                        <div class="availability mb-3">
-                            <label class="sr-only" for="availability">Availability:</label>
-                            <input id="availability" name="availability" type="text" class="form-control" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="from_location">From Location:</label>
+                            <select class="form-select" name="from_location" id="from_location" required>
+                                <option value="" selected disabled>Select a location</option>
+                                <?php foreach ($fromLocations as $location) : ?>
+                                <option value="<?php echo $location['id']; ?>"><?php echo $location['city']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <!--//form-group-->
-                        <div class="price mb-3">
-                            <label class="sr-only" for="price">Price:</label>
-                            <input id="price" name="price" type="text" class="form-control" required>
+                        <div class="mb-3">
+                            <label class="form-label" for="to_location">To Location:</label>
+                            <select class="form-select" name="to_location" id="to_location" required>
+                                <option value="" selected disabled>Select a location</option>
+                                <?php foreach ($toLocations as $location) : ?>
+                                <option value="<?php echo $location['id']; ?>"><?php echo $location['city']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <!--//form-group-->
+                        <div class="mb-3">
+                            <label class="form-label" for="departure_time">Departure Time:</label>
+                            <input type="time" class="form-control" name="departure_time" id="departure_time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="eta">ETA:</label>
+                            <input type="time" class="form-control" name="eta" id="eta" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="status">Status:</label>
+                            <select class="form-select" name="status" id="status" required>
+                                <option value="1" selected>Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="availability">Available Seats:</label>
+                            <input type="number" class="form-control" name="availability" id="availability" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="price">Price:</label>
+                            <input type="number" class="form-control" name="price" id="price" required>
+                        </div>
                         <div class="text-center">
-                            <input id="submit" name="add" type="submit" class="btn btn-primary" value="Add">
+                            <input type="submit" name="add_schedule" class="btn btn-primary" value="Add Schedule">
                         </div>
                     </form>
                 </div>
