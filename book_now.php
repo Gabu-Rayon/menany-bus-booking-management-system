@@ -685,7 +685,7 @@ th {
     }
 
     function deleteTicket(id) {
-        // Use AJAX to call the PHP script to delete the ticket
+        // Use AJAX To call the PHP script To delete the ticket
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
