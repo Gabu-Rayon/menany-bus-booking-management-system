@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2023 at 05:18 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Oct 30, 2023 at 10:32 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,7 +32,7 @@ CREATE TABLE `admin` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
@@ -54,7 +54,7 @@ CREATE TABLE `bus` (
   `bus_number` varchar(50) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 = inactive, 1 = active',
   `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bus`
@@ -80,7 +80,7 @@ CREATE TABLE `location` (
   `state` varchar(250) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0= inactive , 1= active',
   `date_updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `location`
@@ -115,7 +115,7 @@ CREATE TABLE `paid_tickets` (
   `amount_paid` int(11) DEFAULT NULL,
   `type_payment` varchar(255) DEFAULT NULL,
   `payment_ref_no` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `paid_tickets`
@@ -149,7 +149,7 @@ CREATE TABLE `schedule_list` (
   `availability` int(11) NOT NULL,
   `price` text NOT NULL,
   `date_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `schedule_list`
@@ -170,11 +170,11 @@ INSERT INTO `schedule_list` (`id`, `bus_id`, `from_location`, `to_location`, `de
 CREATE TABLE `tbl_users` (
   `id` int(11) NOT NULL,
   `firstname` varchar(250) NOT NULL,
-  `lastname` varchar(250) CHARACTER SET utf8mb4 NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `lastname` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(255) NOT NULL,
-  `contact` varchar(255) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `contact` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `tbl_users`
@@ -182,16 +182,7 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `firstname`, `lastname`, `email`, `password`, `contact`) VALUES
 (1, 'murimi', 'murimi', 'admin@mail.com', '$2y$10$rMK9ey7aoB0xyJAZc4ssAeF5jwuJhZhJfyjKwU.SmSc.K/QNV.HOu', '0758519193'),
-(2, 'Tems', 'murimi', 'tems@mail.com', '$2y$10$9IY9RirNmUsfa78AdypPy.wTLZUpVj6JFT2uPyjY0S30FvNwXKMgK', '0758519193'),
-(3, 'murimi', 'muri', 'admin@mail.com', '$2y$10$KJ5uSNXQaS4O0YgvaWbc9O0.VWL0eQ2MAIbvifKQc6Ek62ClYitv2', '0758519193'),
-(4, 'Tems', 'jikooo', 'tem789@mail.com', '$2y$10$uEFtgYEJ4PlkbrBYIWMTX.Hp38CTjjOvmw8nICzMSWQ88j5k.2CWa', '0758519193'),
-(5, 'murimi', 'murimi', 'admin@mail.com', '$2y$10$MMw2q//Vq.WsQSztZwL1VOo13DcpUBLGIKGfIHKaiGRDbxQvtl2oe', '0758519193'),
-(6, 'Gibson ', 'Muriuki', 'gibsonmurimi4@gmail.com', '$2y$10$Qrd0ubU5F61tTgW8R2I4I.OIlwJSVOOPBFihN3puWF5vPOsBiKD9K', '0758519193'),
-(8, 'brian', 'muthomi', 'muthomi@gmail.com', '$2y$10$T05IFGFoCa.R4ClQo6buVObzeECR1K6iBZyUp3t/LsSRPXrRt453m', '537823768'),
-(9, 'brian', 'muthomi', 'muthomi@gmail.com', '$2y$10$pMUu1o6nN20JoWO8cnOqP.NqpZc3MJ2GoE360SJSb/8Wh9rIbp0ai', '556778'),
-(10, 'brian', 'muthomi', 'muthomi@gmail.com', '$2y$10$S8x/SxdoOnSA3zAWZkQTkeLhkD32tF5ps3a5YKCq.Vlb993pRbvxW', '556778'),
-(11, 'brian', 'muthomi', 'muthomi@gmail.com', '$2y$10$gF3QvMCGpM5EICtnM.A3nu8PijPK1FlyR1Q97o37iglwirjIl0Mhy', '12345'),
-(12, 'Elias', 'Musese', 'elias@gmail.com', '$2y$10$7tYQgGrWfcvsSNOUIjaNL.g.BBNvyUVSh3BnGYUGjot3szjhPmRGi', '0754658912');
+(2, 'Tems', 'murimi', 'tems@mail.com', '$2y$10$9IY9RirNmUsfa78AdypPy.wTLZUpVj6JFT2uPyjY0S30FvNwXKMgK', '0758519193');
 
 -- --------------------------------------------------------
 
@@ -214,7 +205,7 @@ CREATE TABLE `tickets` (
   `visacard_valid` date DEFAULT NULL,
   `bank_branchName` varchar(255) DEFAULT NULL,
   `bankPayment_Date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tickets`
@@ -246,7 +237,7 @@ CREATE TABLE `unpaid_tickets` (
   `fare_amount` varchar(255) NOT NULL,
   `how_many` varchar(244) DEFAULT NULL,
   `luggage_count` varchar(244) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `unpaid_tickets`
@@ -267,7 +258,8 @@ INSERT INTO `unpaid_tickets` (`id`, `customer_id`, `bus`, `bus_plate`, `from_ter
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_email` (`email`);
 
 --
 -- Indexes for table `bus`
@@ -297,7 +289,8 @@ ALTER TABLE `schedule_list`
 -- Indexes for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_email` (`email`);
 
 --
 -- Indexes for table `tickets`
